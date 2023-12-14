@@ -15,7 +15,7 @@ public struct CircuitChatPackage {
 
     // Function to create the main tab view
     public func createMainTabView() -> some View {
-        return MainTabView()
+        return MainTabView(observed: observed)
             .environmentObject(socketIO)
     }
 

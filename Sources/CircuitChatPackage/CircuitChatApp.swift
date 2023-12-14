@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct CircuitChatApp: App {
-    
-    var body: some Scene {
-        WindowGroup {
-            MainTabView()
-        }
-    }
-}
+//struct CircuitChatApp: App {
+//
+//    var body: some Scene {
+//        WindowGroup {
+//            MainTabView()
+//        }
+//    }
+//}

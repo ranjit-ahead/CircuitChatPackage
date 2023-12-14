@@ -10,7 +10,8 @@ import SwiftUI
 struct MainTabView: View {
     
     @EnvironmentObject var socketIO: CircuitChatSocketManager
-
+    
+    @ObservedObject var observed: MainTabViewObserved
     
     @State private var selection = 0
     
@@ -93,11 +94,11 @@ struct MainTabView: View {
     }
 }
 
-struct MainTabView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainTabView()
-    }
-}
+//struct MainTabView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainTabView()
+//    }
+//}
 
 final class NewChatNavigation: ObservableObject {
     @Published var showSheet = false
