@@ -109,7 +109,7 @@ struct ChatListView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
-                    dismiss()
+                    //dismiss()
                 } label: {
                     Image(uiImage: UIImage(named: "leftArrow", in: Bundle.main, with: nil)!)
                         .resizable()
