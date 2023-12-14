@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     
-    @ObservedObject private var socketIO: CircuitChatSocketManager = CircuitChatSocketManager()
+    @EnvironmentObject var socketIO: CircuitChatSocketManager()
     @ObservedObject private var getMenus: FetchMenus = FetchMenus()
     
     @StateObject private var observed = Observed()
@@ -48,7 +48,6 @@ struct MainTabView: View {
                 observed.fetchApiData()
             }
         }
-        .environmentObject(socketIO)
         
         //UnreadChat count
         .onChange(of: socketIO.unreadCount, perform: { chatResponse in

@@ -44,6 +44,8 @@ struct ChatListView: View {
     
     var archivedView = false
     
+    @Environment(\.dismiss) var dismiss
+    
     @EnvironmentObject var socketIO: CircuitChatSocketManager
     
     @ObservedObject var observed: ChatListViewObserved
@@ -109,7 +111,7 @@ struct ChatListView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
-                    //dismiss()
+                    dismiss()
                 } label: {
                     Image(uiImage: UIImage(named: "leftArrow", in: Bundle.main, with: nil)!)
                         .resizable()
