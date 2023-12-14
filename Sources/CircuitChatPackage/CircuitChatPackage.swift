@@ -4,7 +4,7 @@ public struct CircuitChatPackage {
     
     @ObservedObject private var socketIO: CircuitChatSocketManager = CircuitChatSocketManager()
     
-    @StateObject private var observed = MainTabViewObserved()
+    @ObservedObject private var observed = MainTabViewObserved()
     
     public init(domain: String, userId: String, clientId: String, clientSecret: String) {
         circuitChatDomain = domain
