@@ -7,12 +7,12 @@
 
 import Foundation
 
-extension MainTabView {
-    class Observed: ObservableObject {
+//extension MainTabView {
+    class MainTabViewObserved: ObservableObject {
         @Published var apiResponse: MainTabViewData?
         
         var socketIO: CircuitChatSocketManager?
-        var menus: FetchMenus?
+//        var menus: FetchMenus?
         
         func fetchApiData() {
             
@@ -22,7 +22,7 @@ extension MainTabView {
                     circuitChatToken = data.token
                     self.apiResponse = data
                     self.socketIO?.connectSocket()
-                    self.menus?.fetchAPI()
+//                    self.menus?.fetchAPI()
                 case .failure(let error):
                     print("Error fetching chat messages: \(error.localizedDescription)")
                 }
@@ -52,7 +52,7 @@ extension MainTabView {
         }
         
     }
-}
+//}
 
 class FetchMenus: ObservableObject {
     

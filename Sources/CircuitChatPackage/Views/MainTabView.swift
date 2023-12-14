@@ -10,9 +10,7 @@ import SwiftUI
 struct MainTabView: View {
     
     @EnvironmentObject var socketIO: CircuitChatSocketManager
-    @ObservedObject private var getMenus: FetchMenus = FetchMenus()
-    
-    @StateObject private var observed = Observed()
+
     
     @State private var selection = 0
     
@@ -42,11 +40,6 @@ struct MainTabView: View {
             //            navigationBarAppearance.configureWithOpaqueBackground()
             //            UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
             
-            if observed.apiResponse == nil {
-                observed.socketIO = socketIO
-                observed.menus = getMenus
-                observed.fetchApiData()
-            }
         }
         
         //UnreadChat count
