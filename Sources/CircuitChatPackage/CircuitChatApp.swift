@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@main
 struct CircuitChatApp: App {
     
     var body: some Scene {
