@@ -1,0 +1,256 @@
+{
+    "formObject": [
+        {
+            "type": "input",
+            "inputType": "text",
+            "id": "search",
+            "name": "search",
+            "placeholder": "Input Name to Search",
+            "apiUrl": "/message",
+            "apiMethod": "GET",
+            "apiQueryParams": {
+                "search": "search"
+            }
+        },
+        {
+            "type": "button",
+            "id": "edit",
+            "name": "edit",
+            "label": "Edit"
+        },
+        {
+            "type": "button",
+            "id": "new-chat",
+            "name": "new-chat",
+            "label": "New Chat"
+        },
+        {
+            "type": "button",
+            "id": "unread-chat",
+            "name": "unread-chat",
+            "label": "Unread Chat"
+        },
+        {
+            "type": "section",
+            "parts": [
+                {
+                    "type": "button",
+                    "id": "people",
+                    "name": "people",
+                    "apiUrl": "/message?user=true",
+                    "apiMethod": "GET",
+                    "label": "People"
+                },
+                {
+                    "type": "button",
+                    "id": "group",
+                    "name": "group",
+                    "apiUrl": "/message?group=true",
+                    "apiMethod": "GET",
+                    "label": "Group"
+                }
+            ]
+        },
+        {
+            "type": "button",
+            "id": "archive",
+            "name": "archive",
+            "apiUrl": "/message?archive=true",
+            "apiMethod": "GET"
+        }
+    ],
+    "data": [
+        {
+            "lastMessage": {
+                "_id": "64edea0266cc4abda11a7179",
+                "contentType": "text",
+                "text": "Okk",
+                "createdAt": "2023-08-29T12:52:18.631Z",
+                "message_status": [
+                    {
+                        "_id": "64edea0266cc4abda11a717c",
+                        "message": "64edea0266cc4abda11a7179",
+                        "user": "64b9060f1a7b38a074cfc51d",
+                        "status": 1,
+                        "createdAt": "2023-08-29T12:52:18.637Z",
+                        "updatedAt": "2023-08-29T12:52:18.637Z"
+                    },
+                    {
+                        "_id": "64edea0266cc4abda11a717d",
+                        "message": "64edea0266cc4abda11a7179",
+                        "user": "64cb71e0f522b219045c11bb",
+                        "status": 1,
+                        "createdAt": "2023-08-29T12:52:18.637Z",
+                        "updatedAt": "2023-08-29T12:52:18.637Z"
+                    },
+                    {
+                        "_id": "64edea0266cc4abda11a717e",
+                        "message": "64edea0266cc4abda11a7179",
+                        "user": "64cb760ef522b219045c122a",
+                        "status": 1,
+                        "createdAt": "2023-08-29T12:52:18.637Z",
+                        "updatedAt": "2023-08-29T12:52:18.637Z"
+                    },
+                    {
+                        "_id": "64edea0266cc4abda11a717f",
+                        "message": "64edea0266cc4abda11a7179",
+                        "user": "64edd5b666cc4abda11a68f0",
+                        "status": 1,
+                        "createdAt": "2023-08-29T12:52:18.637Z",
+                        "updatedAt": "2023-08-29T12:52:18.637Z"
+                    },
+                    {
+                        "_id": "64edea0266cc4abda11a7180",
+                        "message": "64edea0266cc4abda11a7179",
+                        "user": "64edd5ef66cc4abda11a690e",
+                        "status": 1,
+                        "createdAt": "2023-08-29T12:52:18.637Z",
+                        "updatedAt": "2023-08-29T12:52:18.637Z"
+                    }
+                ]
+            },
+            "mute": false,
+            "chat": {
+                "_id": "64b908b755033863b46c7299",
+                "name": "afa",
+                "avatar": "https://picsum.photos/200",
+                "chatType": "group"
+            },
+            "pin": false,
+            "unread": 0,
+            "apiUrl": "/message/64b908b755033863b46c7299",
+            "apiMethod": "GET",
+            "menu": [
+                {
+                    "key": "mute",
+                    "label": "Mute Conversation",
+                    "apiUrl": "/message/mute/64b908b755033863b46c7299",
+                    "apiMethod": "GET"
+                },
+                {
+                    "key": "block",
+                    "label": "Block User",
+                    "apiUrl": "/message/block/64b908b755033863b46c7299",
+                    "apiMethod": "GET"
+                },
+                {
+                    "key": "delete",
+                    "label": "Delete Conversation",
+                    "apiUrl": "/message/delete-conversation/64b908b755033863b46c7299",
+                    "apiMethod": "GET"
+                },
+                {
+                    "key": "archive",
+                    "label": "Archive Conversation",
+                    "apiUrl": "/message/archive/64b908b755033863b46c7299",
+                    "apiMethod": "GET"
+                }
+            ]
+        },
+        {
+            "lastMessage": {
+                "_id": "64ed9c14c143ef523d391fb2",
+                "contentType": "text",
+                "text": "Good Morning again",
+                "createdAt": "2023-08-29T07:19:48.937Z",
+                "message_status": [
+                    {
+                        "_id": "64ed9c14c143ef523d391fb4",
+                        "message": "64ed9c14c143ef523d391fb2",
+                        "user": "64cb760ef522b219045c122a",
+                        "status": 1,
+                        "createdAt": "2023-08-29T07:19:48.938Z",
+                        "updatedAt": "2023-08-29T07:19:48.938Z"
+                    },
+                    {
+                        "_id": "64ed9c14c143ef523d391fb5",
+                        "message": "64ed9c14c143ef523d391fb2",
+                        "user": "64cb71e0f522b219045c11bb",
+                        "status": 1,
+                        "createdAt": "2023-08-29T07:19:48.940Z",
+                        "updatedAt": "2023-08-29T07:19:48.940Z"
+                    }
+                ]
+            },
+            "mute": false,
+            "chat": {
+                "_id": "64cb760ef522b219045c122a",
+                "email": "abhi@jain.com",
+                "name": "abhishek@gmail.com",
+                "avatar": "https://snschat.socialnetworking.solutions//uploads/file/2023/8/28/1693217777552-829745055.jpg",
+                "chatType": "user"
+            },
+            "pin": false,
+            "unread": 0,
+            "apiUrl": "/message/64cb760ef522b219045c122a",
+            "apiMethod": "GET",
+            "menu": [
+                {
+                    "key": "mute",
+                    "label": "Mute Conversation",
+                    "apiUrl": "/message/mute/64cb760ef522b219045c122a",
+                    "apiMethod": "GET"
+                },
+                {
+                    "key": "block",
+                    "label": "Block User",
+                    "apiUrl": "/message/block/64cb760ef522b219045c122a",
+                    "apiMethod": "GET"
+                },
+                {
+                    "key": "delete",
+                    "label": "Delete Conversation",
+                    "apiUrl": "/message/delete-conversation/64cb760ef522b219045c122a",
+                    "apiMethod": "GET"
+                },
+                {
+                    "key": "archive",
+                    "label": "Archive Conversation",
+                    "apiUrl": "/message/archive/64cb760ef522b219045c122a",
+                    "apiMethod": "GET"
+                }
+            ]
+        },
+        {
+            "mute": false,
+            "chat": {
+                "_id": "64cbb202f522b219045c12fe",
+                "name": "dasd",
+                "avatar": "https://picsum.photos/200",
+                "chatType": "group"
+            },
+            "pin": false,
+            "lastMessage": {},
+            "unread": 0,
+            "apiUrl": "/message/64cbb202f522b219045c12fe",
+            "apiMethod": "GET",
+            "menu": [
+                {
+                    "key": "mute",
+                    "label": "Mute Conversation",
+                    "apiUrl": "/message/mute/64cbb202f522b219045c12fe",
+                    "apiMethod": "GET"
+                },
+                {
+                    "key": "block",
+                    "label": "Block User",
+                    "apiUrl": "/message/block/64cbb202f522b219045c12fe",
+                    "apiMethod": "GET"
+                },
+                {
+                    "key": "delete",
+                    "label": "Delete Conversation",
+                    "apiUrl": "/message/delete-conversation/64cbb202f522b219045c12fe",
+                    "apiMethod": "GET"
+                },
+                {
+                    "key": "archive",
+                    "label": "Archive Conversation",
+                    "apiUrl": "/message/archive/64cbb202f522b219045c12fe",
+                    "apiMethod": "GET"
+                }
+            ]
+        }
+    ],
+    "count": 3
+}
