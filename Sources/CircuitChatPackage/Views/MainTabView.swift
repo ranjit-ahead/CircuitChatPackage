@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     
-    @EnvironmentObject var socketIO: CircuitChatSocketManager()
+    @EnvironmentObject var socketIO: CircuitChatSocketManager
     @ObservedObject private var getMenus: FetchMenus = FetchMenus()
     
     @StateObject private var observed = Observed()
