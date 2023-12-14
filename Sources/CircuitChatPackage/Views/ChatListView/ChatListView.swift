@@ -107,6 +107,15 @@ struct ChatListView: View {
         .navigationTitle(observed.apiResponse?.menu.navigationTitle ?? "")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(uiImage: UIImage(named: "leftArrow", in: Bundle.main, with: nil)!)
+                        .resizable()
+                        .frame(width: 28, height: 28)
+                }
+            }
             ToolbarItem(placement: .principal) {
                 Text(observed.apiResponse?.menu.navigationTitle ?? "")
                     .font(.semiBoldFont(22))
