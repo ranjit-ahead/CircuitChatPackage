@@ -423,6 +423,8 @@ struct UserChatDetail: View {
                 if let userChatData = userChatData,
                    let index = observed.userChatDataArray?.firstIndex(where: { $0.id == userChatData.id }) {
                     observed.userChatDataArray?[index] = userChatData
+                    
+                    socketIO.messageEdited = nil
                 }
             }
             

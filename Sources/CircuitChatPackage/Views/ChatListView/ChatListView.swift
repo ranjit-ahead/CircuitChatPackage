@@ -196,6 +196,8 @@ struct ChatListView: View {
                         archivedObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
                     }
                 }
+                
+                socketIO.messageEdited = nil
             }
         }
         
