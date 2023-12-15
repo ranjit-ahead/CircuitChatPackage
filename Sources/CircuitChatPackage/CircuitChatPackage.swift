@@ -6,7 +6,7 @@ public struct CircuitChatPackage {
     
     @ObservedObject private var observed = MainTabViewObserved()
     
-    @State private var originalNavBarAppearance: UINavigationBarAppearance?
+    private var originalNavBarAppearance = UINavigationBar.appearance().standardAppearance
     
     public init(domain: String, userId: String, clientId: String, clientSecret: String) {
         circuitChatDomain = domain
@@ -20,9 +20,6 @@ public struct CircuitChatPackage {
         return MainTabView(observed: observed)
             .environmentObject(socketIO)
             .onAppear {
-                // Save the original appearance when the view appears
-                originalNavBarAppearance = UINavigationBar.appearance().standardAppearance
-                
                 // Change to the default appearance when the view appears
                 let defaultAppearance = UINavigationBarAppearance()
                 UINavigationBar.appearance().standardAppearance = defaultAppearance
@@ -30,8 +27,8 @@ public struct CircuitChatPackage {
             }
             .onDisappear {
                 // Save the original appearance when the view appears
-                UINavigationBar.appearance().standardAppearance = originalNavBarAppearance!
-                UINavigationBar.appearance().scrollEdgeAppearance = originalNavBarAppearance!
+                UINavigationBar.appearance().standardAppearance = originalNavBarAppearance
+                UINavigationBar.appearance().scrollEdgeAppearance = originalNavBarAppearance
             }
     }
 
