@@ -1081,8 +1081,9 @@ struct ChatListView: View {
             Button {
                 observed.archiveChat(chatIds: [item.id])
             } label: {
-                Label(swipeOption.label ?? "", image: swipeOption.id=="archive" ? "archived" : "unarchived")
+                Text(swipeOption.label ?? "")
                     .font(.regularFont(12))
+                Image(swipeOption.id=="archive" ? "archived" : "unarchived", bundle: .module)
                 //                                            Label(title: {
                 //                                                Text(archive.label ?? "")
                 //                                            }, icon: {
@@ -1098,8 +1099,9 @@ struct ChatListView: View {
                 Button {
                     observed.pinChat(chat: item)
                 } label: {
-                    Label((item.pin ?? false) ? (swipeOption.labelSelected ?? "") : (swipeOption.label ?? ""), image: (item.pin ?? false) ? "unpinned" : "pinned")
+                    Text((item.pin ?? false) ? (swipeOption.labelSelected ?? "") : (swipeOption.label ?? ""))
                         .font(.regularFont(12))
+                    Image((item.pin ?? false) ? "unpinned" : "pinned", bundle: .module)
                 }
                 .tint(Color.blue)
             }
@@ -1109,8 +1111,9 @@ struct ChatListView: View {
                 showMoreOptions.toggle()
                 
             } label: {
-                Label(swipeOption.label ?? "", image: "more")
+                Text(swipeOption.label ?? "")
                     .font(.regularFont(12))
+                Image("more", bundle: .module)
             }
             .tint(Color(uiColor: .systemGray3))
         }
