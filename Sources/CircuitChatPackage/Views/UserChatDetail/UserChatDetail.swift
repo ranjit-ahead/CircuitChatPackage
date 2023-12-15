@@ -58,428 +58,429 @@ struct UserChatDetail: View {
     
     //MARK: BODY
     var body: some View {
-        if let userDetails = userDetails {
-            NavigationStack {
-                VStack(spacing:0) {
-                    
-                    ScrollView {
-                        ScrollViewReader { scrollReader in
-                            VStack {
-                                if let userChatDataArray = observed.userChatDataArray {
-                                    ForEach(userChatDataArray) { chat in
-                                        getMessagesView(chat)
-                                    }
-                                }
-                            }
-                            .padding(.horizontal)
-                            .background(GeometryReader { geometry in
-                                Color.clear
-                                    .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).origin)
-                            })
-                            .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
-                                if value.y>0 && !observed.requestFetching {
-                                    observed.fetchChatMessages(lastChatData: userDetails, password: password)
-                                }
-                            }
-                            .onChange(of: observed.userChatDataArray, perform: { userChatDataArray in
-                                if let chat = userChatDataArray?.last, userChatDataArray?.count ?? 0 <= observed.limitCount {
-                                    withAnimation(.none) {
-                                        scrollReader.scrollTo((chat.id ?? ""))
-                                    }
-                                }
-                            })
-                            .onChange(of: observed.scrolledUserChatData) { userChatData in
-                                withAnimation(.none) {
-                                    scrollReader.scrollTo((userChatData?.id ?? ""), anchor: .top)
-                                }
-                            }
-                            .onChange(of: observed.userChatData) { userChatData in
-                                withAnimation(.none) {
-                                    scrollReader.scrollTo(userChatData?.id ?? "")
-                                }
-                            }
-                            .onChange(of: scrollToMessage, perform: { id in
-                                if scrollToMessage != "" {
-                                    withAnimation(.none) {
-                                        scrollReader.scrollTo(id, anchor: .center)
-                                    }
-                                    scrollToMessage = ""
-                                }
-                            })
-                        }
-                    }
-                    
-                    if deleteMode == .active {
-                        HStack {
-                            let indexArray = observed.userChatDataArray?.filter({ $0.isSelected ?? false }).map({ $0 })
-                            let arrayCount = indexArray?.count ?? 0
-                            
-                            //DELETE BUTTON
-                            Button {
-                                if arrayCount>0 {
-                                    deleteMessageAlert.toggle()
-                                }
-                            } label: {
-                                Image(systemName: "trash")
-                                    .imageIconModifier(imageSize: 24, iconSize: 46, imageColor: arrayCount>0 ? .blue : Color(.lightGray) , color: Color(.systemGray6))
-                                    .disabled(arrayCount>0 ? false : true)
-                            }
-                            .fullScreenCover(isPresented: $deleteMessageAlert, content: {
-                                ShowCustomDialogSheet(action: { deleteMessageAlert.toggle() }, content: {
-                                    VStack(spacing: 30) {
-                                        
-                                        let text = arrayCount==1 ? "Delete \(arrayCount) Message?" : "Delete \(arrayCount) Messages?"
-                                        Text(text)
-                                            .font(.semiBoldFont(20))
-                                            .foregroundColor(Color(.label))
-                                        
-                                        if let array = indexArray {
-                                            if array.allSatisfy { ($0.sender ?? "")==circuitChatUID } {
-                                                if array.allSatisfy { ($0.contentType ?? "") != "deleted" } {
-                                                    Button {
-                                                        deleteMessageAlert.toggle()
-                                                        deleteMode.toggle()
-                                                        if let data = observed.userChatDataArray {
-                                                            let chatIDs = data.filter{ $0.isSelected ?? false }.map{ $0 }
-                                                            observed.deleteMessage(chatIDs, forEveryone: true)
-                                                        }
-                                                    } label: {
-                                                        Text("Delete For Everyone")
-                                                            .font(.regularFont(16))
-                                                            .foregroundColor(.red)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        
-                                        Button {
-                                            deleteMessageAlert.toggle()
-                                            deleteMode.toggle()
-                                            if let data = observed.userChatDataArray {
-                                                let chatIDs = data.filter{ $0.isSelected ?? false }.map{ $0 }
-                                                observed.deleteMessage(chatIDs)
-                                            }
-                                        } label: {
-                                            Text("Delete For Me")
-                                                .font(.regularFont(16))
-                                                .foregroundColor(.red)
-                                        }
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                })
-                            })
-                            
-                            Spacer()
-                            
-                            if let indexArray = observed.userChatDataArray?.filter{ $0.isSelected ?? false }.map{ $0 } {
-                                Text("\(indexArray.count) Selected")
-                                    .font(.regularFont(16))
-                            }
-                        }
-                        .padding(.horizontal)
-                        .background(.ultraThinMaterial)
-                        .overlay(Rectangle().frame(height: 0.2).foregroundColor(Color.gray), alignment: .top)
-                        .onAppear {
-                            UIView.setAnimationsEnabled(false)
-                        }
-                    } else if forwardMode == .active {
-                        HStack {
-                            let indexArray = observed.userChatDataArray?.filter({ $0.isSelected ?? false }).map({ $0 })
-                            let arrayCount = indexArray?.count ?? 0
-                            
-                            //FORWARD BUTTON
-                            Button {
-                                if arrayCount>0 {
-                                    showAllUsersView.toggle()
-                                }
-                            } label: {
-                                Image(systemName: "arrowshape.turn.up.forward")
-                                    .imageIconModifier(imageSize: 24, iconSize: 46, imageColor: arrayCount>0 ? .blue : Color(.lightGray) , color: Color(.systemGray6))
-                                    .disabled(arrayCount>0 ? false : true)
-                            }
-                            
-                            Spacer()
-                            
-                            if let indexArray = observed.userChatDataArray?.filter{ $0.isSelected ?? false }.map{ $0 } {
-                                Text("\(indexArray.count) Selected")
-                                    .font(.regularFont(16))
-                            }
-                            
-                            Spacer()
-                            
-                            //Share
-                            Button {
-                                if arrayCount>0 {
-                                    showAllUsersView.toggle()
-                                }
-                            } label: {
-                                Image(systemName: "square.and.arrow.up")
-                                    .imageIconModifier(imageSize: 24, iconSize: 46, imageColor: arrayCount>0 ? .blue : Color(.lightGray) , color: Color(.systemGray6))
-                                    .disabled(arrayCount>0 ? false : true)
-                            }
-                        }
-                        .sheet(isPresented: $showAllUsersView, content: {
-                            if let dialog = observed.userChat?.footerDialog?.first, dialog.key=="forward" {
-                                if let selectedMessage = observed.userChatDataArray?.filter({ $0.isSelected ?? false }).map({ $0.id ?? "" }) {
-                                    AddMembersView(apiRequest: ApiRequest(apiURL: dialog.apiUrl, method: dialog.apiMethod), forwardMode: $forwardMode, forwardMessages: selectedMessage)
-                                }
-                            }
-                        })
-                        .padding(.horizontal)
-                        .background(.ultraThinMaterial)
-                        .overlay(Rectangle().frame(height: 0.2).foregroundColor(Color.gray), alignment: .top)
-                        .onAppear {
-                            UIView.setAnimationsEnabled(false)
-                        }
-                    } else {
-                        if let reply = replyMessage {
-                            repliedMessageView(reply)
-                        }
-                        customTextField
-                    }
-                }
-                .fullScreenCover(isPresented: .constant(getBoolFromString(observed.toastMessage))) {
-                    Toast(isShowing: $observed.toastMessage)
-                }
-                .fullScreenCover(isPresented: $addMoreOptions, content: {
-                    addMoreOptionsCustomDialog
-                })
-                .fullScreenCover(isPresented: $showMediaSelected, content: {
-                    ShowMediaSelected(selectedMedia: $selectedMedia, userDetails: userDetails, openShowEditView: $showMediaSelected, mediaText: .constant(""))
-                })
-                .fullScreenCover(isPresented: .constant(reportBlockDialog != nil ? true : false), content: {
-                    ShowCustomDialogSheet(action: { reportBlockDialog = nil }, content: {
-                        VStack(spacing: 30) {
-                            if let label = reportBlockDialog?.label {
-                                Text(label)
-                                    .font(.semiBoldFont(20))
-                                    .foregroundColor(Color(.label))
-                            }
-                            if let desc = reportBlockDialog?.description {
-                                Text(desc)
-                                    .font(.regularFont(14))
-                                    .foregroundColor(Color(.label))
-                                    .frame(minWidth: 0, maxWidth: .infinity)
-                                    .multilineTextAlignment(.center)
-                            }
-                            
-                            VStack(alignment:.leading) {
-                                
-                                if let buttons = reportBlockDialog?.buttons {
-                                    ForEach(buttons) { button in
-                                        reportBlockDialogView(button, lastIndex: buttons.last==button)
-                                    }
-                                } else if let confirmText = reportBlockDialog?.confirmText {
-                                    Button {
-                                        observed.reportChat(apiRequest: ApiRequest(apiURL: reportBlockDialog?.apiUrl, method: reportBlockDialog?.apiMethod), block: false, leave: false)
-                                        reportBlockDialog = nil
-                                    } label: {
-                                        Text(confirmText)
-                                            .font(.regularFont(16))
-                                            .foregroundColor(.red)
-                                    }
-                                }
-                            }
-                        }
-                        .padding()
-                    })
-                })
-                .onAppear {
-                    if observed.pageCount == 1 {
-                        observed.fetchChatMessages(lastChatData: userDetails, password: password)
-                        //                        if userDetails.unread > 0 {
-                        let json = [
-                            "chat": userDetails.id,
-                            "receiverType": userDetails.chatType ?? "user"
-                        ]
-                        socketIO.defaultUserSocket?.emit(CircuitChatSocketEvents.message_seen.rawValue, json)
-                        //                        }
-                    }
-                }
-                .toolbar {
-                    // Add custom views to the navigation toolbar here
-                    
-                    ToolbarItem(placement: .principal) {
-                        NavigationLink(destination: {
-                            if userDetails.chatType=="user"  {
-                                UserInfo(id: userDetails.id).toolbarRole(.editor)
-                            } else {
-                                GroupInfo(userDetails: userDetails).toolbarRole(.editor)
-                            }}, label: {
-                                HStack {
-                                    ImageDownloader(userDetails.avatar)
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 40, height: 40)
-                                        .clipShape(Circle())
-                                        .padding(.vertical, 8)
-                                    
-                                    VStack(alignment: .leading, spacing: 1) {
-                                        ChatName(name: userDetails.name, font: .semiBoldFont(15), verified: userDetails.verified, iconSize: 19)
-                                        if let action = userDetails.action {
-                                            Text(action)
-                                                .font(.regularFont(12))
-                                                .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
-                                        } else if userDetails.active ?? false {
-                                            Text("Online")
-                                                .font(.regularFont(12))
-                                                .foregroundColor(Color(red: 0, green: 0.67, blue: 0.11))
-                                        } else if userDetails.chatType == "group" {
-                                            Text("tap here for group info")
-                                                .font(.regularFont(12))
-                                                .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
-                                        } else if let lastActive = userDetails.lastActive?.onlineDateFormat {
-                                            Text("last seen \(lastActive)")
-                                                .font(.regularFont(12))
-                                                .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
-                                        } else {
-                                            Text("tap here for friend info")
-                                                .font(.regularFont(12))
-                                                .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
-                                        }
-                                    }
-                                    
-                                    Spacer()
-                                }.frame(width: UIScreen.screenWidth-160)
-                            })
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        HStack(spacing: 15) {
-                            
-                            if deleteMode == .active {
-                                Text("Cancel").foregroundColor(.blue).font(.semiBoldFont(18)).minimumScaleFactor(0.1)
-                                    .onTapGesture {
-                                        if let chat = observed.userChatDataArray{
-                                            for chatData in chat {
-                                                if let index = observed.userChatDataArray?.firstIndex(of: chatData) {
-                                                    observed.userChatDataArray?[index].isSelected = false
-                                                }
-                                            }
-                                        }
-                                        deleteMode.toggle()
-                                    }
-                            } else if forwardMode == .active {
-                                Text("Cancel").foregroundColor(.blue).font(.semiBoldFont(18)).minimumScaleFactor(0.1)
-                                    .onTapGesture {
-                                        if let chat = observed.userChatDataArray{
-                                            for chatData in chat {
-                                                if let index = observed.userChatDataArray?.firstIndex(of: chatData) {
-                                                    observed.userChatDataArray?[index].isSelected = false
-                                                }
-                                            }
-                                        }
-                                        forwardMode.toggle()
-                                    }
-                            } else {
-                                Button {
-                                    observed.toastMessage = "coming soon..."
-                                } label: {
-                                    Image("userPageCall", bundle: .module)
-                                        .renderingMode(.template)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 30, height: 30)
-                                        .foregroundColor(Color(UIColor.label))
-                                }
-                                Button {
-                                    observed.toastMessage = "coming soon..."
-                                } label: {
-                                    Image("userPageVideo", bundle: .module)
-                                        .renderingMode(.template)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 30, height: 30)
-                                        .foregroundColor(Color(UIColor.label))
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            .environmentObject(presentContactView).environmentObject(observed).navigationBarTitle(userDetails.name)
-            
-            //MARK: SOCKETS
-            
-            //Chat Block
-            .onChange(of: socketIO.chatBlock, perform: { chatResponse in
-                if let chatResponse = chatResponse, chatResponse.chat?.contains(userDetails.id) == true {
-                    observed.userChat?.blocked = true
-                    
-                    socketIO.chatBlock = nil
-                }
-            })
-            
-            //Chat Unblock
-            .onChange(of: socketIO.chatUnblock, perform: { chatResponse in
-                if let chatResponse = chatResponse, chatResponse.chat?.contains(userDetails.id) == true {
-                    observed.userChat?.blocked = false
-                    
-                    socketIO.chatBlock = nil
-                }
-            })
-            
-            //Edit Message
-            .onChange(of: socketIO.messageEdited) { userChatData in
-                if let userChatData = userChatData,
-                   let index = observed.userChatDataArray?.firstIndex(where: { $0.id == userChatData.id }) {
-                    observed.userChatDataArray?[index] = userChatData
-                    
-                    socketIO.messageEdited = nil
-                }
-            }
-            
-            //New Message
-            .onChange(of: socketIO.newMessageArray) { userChatDataArray in
-                
-                if let userChatData = userChatDataArray?.first,
-                    userChatData.sender == userDetails.id || userChatData.receiver == userDetails.id {
-                    observed.userChatData = userChatData
-                    observed.userChatDataArray?.append(userChatData)
-                }
-                observed.changeDataModel()
-                let json = [
-                    "chat": userDetails.id,
-                    "receiverType": userDetails.chatType ?? "user"
-                ]
-                socketIO.defaultUserSocket?.emit(CircuitChatSocketEvents.message_seen.rawValue, json)
-            }
-            
-            //Message Deleted for me
-            .onChange(of: socketIO.messageDeleted) { messageDeleted in
-                if let messageId = messageDeleted?.first?.first,
-                   let index = observed.userChatDataArray?.firstIndex(where: { $0.id == messageId }) {
-                    observed.userChatDataArray?.remove(at: index)
-                }
-            }
-            
-            //Message Deleted for everyone
-            .onChange(of: socketIO.messageDeletedEveryone) { messageDeletedEveryone in
-                if let messageDeletedEveryone = messageDeletedEveryone?.first,
-                   let index = observed.userChatDataArray?.firstIndex(where: { $0.id == messageDeletedEveryone.id }) {
-                    observed.userChatDataArray?[index] = messageDeletedEveryone
-                    observed.userChatData = messageDeletedEveryone
-                }
-            }
-            
-            //Message Received
-            .onChange(of: socketIO.messageRecieved) { messageRecieved in
-                if let messageRecieved = messageRecieved?.first,
-                   let index = observed.userChatDataArray?.firstIndex(where: { $0.id == messageRecieved }) {
-                    observed.userChatDataArray?[index].messageStatus = 2
-                }
-            }
-            
-            //Message Seen
-            .onChange(of: socketIO.messageSeen) { messageSeen in
-                if let messageSeenArray = messageSeen?.first {
-                    observed.userChatDataArray?.enumerated().forEach { index, chatData in
-                        if let chatId = chatData.id, messageSeenArray.contains(chatId) {
-                            observed.userChatDataArray?[index].messageStatus = 3
-                        }
-                    }
-                }
-            }
-        }
+        Text("Checking")
+//        if let userDetails = userDetails {
+//            NavigationStack {
+//                VStack(spacing:0) {
+//
+//                    ScrollView {
+//                        ScrollViewReader { scrollReader in
+//                            VStack {
+//                                if let userChatDataArray = observed.userChatDataArray {
+//                                    ForEach(userChatDataArray) { chat in
+//                                        getMessagesView(chat)
+//                                    }
+//                                }
+//                            }
+//                            .padding(.horizontal)
+//                            .background(GeometryReader { geometry in
+//                                Color.clear
+//                                    .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).origin)
+//                            })
+//                            .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+//                                if value.y>0 && !observed.requestFetching {
+//                                    observed.fetchChatMessages(lastChatData: userDetails, password: password)
+//                                }
+//                            }
+//                            .onChange(of: observed.userChatDataArray, perform: { userChatDataArray in
+//                                if let chat = userChatDataArray?.last, userChatDataArray?.count ?? 0 <= observed.limitCount {
+//                                    withAnimation(.none) {
+//                                        scrollReader.scrollTo((chat.id ?? ""))
+//                                    }
+//                                }
+//                            })
+//                            .onChange(of: observed.scrolledUserChatData) { userChatData in
+//                                withAnimation(.none) {
+//                                    scrollReader.scrollTo((userChatData?.id ?? ""), anchor: .top)
+//                                }
+//                            }
+//                            .onChange(of: observed.userChatData) { userChatData in
+//                                withAnimation(.none) {
+//                                    scrollReader.scrollTo(userChatData?.id ?? "")
+//                                }
+//                            }
+//                            .onChange(of: scrollToMessage, perform: { id in
+//                                if scrollToMessage != "" {
+//                                    withAnimation(.none) {
+//                                        scrollReader.scrollTo(id, anchor: .center)
+//                                    }
+//                                    scrollToMessage = ""
+//                                }
+//                            })
+//                        }
+//                    }
+//
+//                    if deleteMode == .active {
+//                        HStack {
+//                            let indexArray = observed.userChatDataArray?.filter({ $0.isSelected ?? false }).map({ $0 })
+//                            let arrayCount = indexArray?.count ?? 0
+//
+//                            //DELETE BUTTON
+//                            Button {
+//                                if arrayCount>0 {
+//                                    deleteMessageAlert.toggle()
+//                                }
+//                            } label: {
+//                                Image(systemName: "trash")
+//                                    .imageIconModifier(imageSize: 24, iconSize: 46, imageColor: arrayCount>0 ? .blue : Color(.lightGray) , color: Color(.systemGray6))
+//                                    .disabled(arrayCount>0 ? false : true)
+//                            }
+//                            .fullScreenCover(isPresented: $deleteMessageAlert, content: {
+//                                ShowCustomDialogSheet(action: { deleteMessageAlert.toggle() }, content: {
+//                                    VStack(spacing: 30) {
+//
+//                                        let text = arrayCount==1 ? "Delete \(arrayCount) Message?" : "Delete \(arrayCount) Messages?"
+//                                        Text(text)
+//                                            .font(.semiBoldFont(20))
+//                                            .foregroundColor(Color(.label))
+//
+//                                        if let array = indexArray {
+//                                            if array.allSatisfy { ($0.sender ?? "")==circuitChatUID } {
+//                                                if array.allSatisfy { ($0.contentType ?? "") != "deleted" } {
+//                                                    Button {
+//                                                        deleteMessageAlert.toggle()
+//                                                        deleteMode.toggle()
+//                                                        if let data = observed.userChatDataArray {
+//                                                            let chatIDs = data.filter{ $0.isSelected ?? false }.map{ $0 }
+//                                                            observed.deleteMessage(chatIDs, forEveryone: true)
+//                                                        }
+//                                                    } label: {
+//                                                        Text("Delete For Everyone")
+//                                                            .font(.regularFont(16))
+//                                                            .foregroundColor(.red)
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//
+//                                        Button {
+//                                            deleteMessageAlert.toggle()
+//                                            deleteMode.toggle()
+//                                            if let data = observed.userChatDataArray {
+//                                                let chatIDs = data.filter{ $0.isSelected ?? false }.map{ $0 }
+//                                                observed.deleteMessage(chatIDs)
+//                                            }
+//                                        } label: {
+//                                            Text("Delete For Me")
+//                                                .font(.regularFont(16))
+//                                                .foregroundColor(.red)
+//                                        }
+//                                    }
+//                                    .frame(maxWidth: .infinity)
+//                                    .padding()
+//                                })
+//                            })
+//
+//                            Spacer()
+//
+//                            if let indexArray = observed.userChatDataArray?.filter{ $0.isSelected ?? false }.map{ $0 } {
+//                                Text("\(indexArray.count) Selected")
+//                                    .font(.regularFont(16))
+//                            }
+//                        }
+//                        .padding(.horizontal)
+//                        .background(.ultraThinMaterial)
+//                        .overlay(Rectangle().frame(height: 0.2).foregroundColor(Color.gray), alignment: .top)
+//                        .onAppear {
+//                            UIView.setAnimationsEnabled(false)
+//                        }
+//                    } else if forwardMode == .active {
+//                        HStack {
+//                            let indexArray = observed.userChatDataArray?.filter({ $0.isSelected ?? false }).map({ $0 })
+//                            let arrayCount = indexArray?.count ?? 0
+//
+//                            //FORWARD BUTTON
+//                            Button {
+//                                if arrayCount>0 {
+//                                    showAllUsersView.toggle()
+//                                }
+//                            } label: {
+//                                Image(systemName: "arrowshape.turn.up.forward")
+//                                    .imageIconModifier(imageSize: 24, iconSize: 46, imageColor: arrayCount>0 ? .blue : Color(.lightGray) , color: Color(.systemGray6))
+//                                    .disabled(arrayCount>0 ? false : true)
+//                            }
+//
+//                            Spacer()
+//
+//                            if let indexArray = observed.userChatDataArray?.filter{ $0.isSelected ?? false }.map{ $0 } {
+//                                Text("\(indexArray.count) Selected")
+//                                    .font(.regularFont(16))
+//                            }
+//
+//                            Spacer()
+//
+//                            //Share
+//                            Button {
+//                                if arrayCount>0 {
+//                                    showAllUsersView.toggle()
+//                                }
+//                            } label: {
+//                                Image(systemName: "square.and.arrow.up")
+//                                    .imageIconModifier(imageSize: 24, iconSize: 46, imageColor: arrayCount>0 ? .blue : Color(.lightGray) , color: Color(.systemGray6))
+//                                    .disabled(arrayCount>0 ? false : true)
+//                            }
+//                        }
+//                        .sheet(isPresented: $showAllUsersView, content: {
+//                            if let dialog = observed.userChat?.footerDialog?.first, dialog.key=="forward" {
+//                                if let selectedMessage = observed.userChatDataArray?.filter({ $0.isSelected ?? false }).map({ $0.id ?? "" }) {
+//                                    AddMembersView(apiRequest: ApiRequest(apiURL: dialog.apiUrl, method: dialog.apiMethod), forwardMode: $forwardMode, forwardMessages: selectedMessage)
+//                                }
+//                            }
+//                        })
+//                        .padding(.horizontal)
+//                        .background(.ultraThinMaterial)
+//                        .overlay(Rectangle().frame(height: 0.2).foregroundColor(Color.gray), alignment: .top)
+//                        .onAppear {
+//                            UIView.setAnimationsEnabled(false)
+//                        }
+//                    } else {
+//                        if let reply = replyMessage {
+//                            repliedMessageView(reply)
+//                        }
+//                        customTextField
+//                    }
+//                }
+//                .fullScreenCover(isPresented: .constant(getBoolFromString(observed.toastMessage))) {
+//                    Toast(isShowing: $observed.toastMessage)
+//                }
+//                .fullScreenCover(isPresented: $addMoreOptions, content: {
+//                    addMoreOptionsCustomDialog
+//                })
+//                .fullScreenCover(isPresented: $showMediaSelected, content: {
+//                    ShowMediaSelected(selectedMedia: $selectedMedia, userDetails: userDetails, openShowEditView: $showMediaSelected, mediaText: .constant(""))
+//                })
+//                .fullScreenCover(isPresented: .constant(reportBlockDialog != nil ? true : false), content: {
+//                    ShowCustomDialogSheet(action: { reportBlockDialog = nil }, content: {
+//                        VStack(spacing: 30) {
+//                            if let label = reportBlockDialog?.label {
+//                                Text(label)
+//                                    .font(.semiBoldFont(20))
+//                                    .foregroundColor(Color(.label))
+//                            }
+//                            if let desc = reportBlockDialog?.description {
+//                                Text(desc)
+//                                    .font(.regularFont(14))
+//                                    .foregroundColor(Color(.label))
+//                                    .frame(minWidth: 0, maxWidth: .infinity)
+//                                    .multilineTextAlignment(.center)
+//                            }
+//
+//                            VStack(alignment:.leading) {
+//
+//                                if let buttons = reportBlockDialog?.buttons {
+//                                    ForEach(buttons) { button in
+//                                        reportBlockDialogView(button, lastIndex: buttons.last==button)
+//                                    }
+//                                } else if let confirmText = reportBlockDialog?.confirmText {
+//                                    Button {
+//                                        observed.reportChat(apiRequest: ApiRequest(apiURL: reportBlockDialog?.apiUrl, method: reportBlockDialog?.apiMethod), block: false, leave: false)
+//                                        reportBlockDialog = nil
+//                                    } label: {
+//                                        Text(confirmText)
+//                                            .font(.regularFont(16))
+//                                            .foregroundColor(.red)
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        .padding()
+//                    })
+//                })
+//                .onAppear {
+//                    if observed.pageCount == 1 {
+//                        observed.fetchChatMessages(lastChatData: userDetails, password: password)
+//                        //                        if userDetails.unread > 0 {
+//                        let json = [
+//                            "chat": userDetails.id,
+//                            "receiverType": userDetails.chatType ?? "user"
+//                        ]
+//                        socketIO.defaultUserSocket?.emit(CircuitChatSocketEvents.message_seen.rawValue, json)
+//                        //                        }
+//                    }
+//                }
+//                .toolbar {
+//                    // Add custom views to the navigation toolbar here
+//
+//                    ToolbarItem(placement: .principal) {
+//                        NavigationLink(destination: {
+//                            if userDetails.chatType=="user"  {
+//                                UserInfo(id: userDetails.id).toolbarRole(.editor)
+//                            } else {
+//                                GroupInfo(userDetails: userDetails).toolbarRole(.editor)
+//                            }}, label: {
+//                                HStack {
+//                                    ImageDownloader(userDetails.avatar)
+//                                        .aspectRatio(contentMode: .fill)
+//                                        .frame(width: 40, height: 40)
+//                                        .clipShape(Circle())
+//                                        .padding(.vertical, 8)
+//
+//                                    VStack(alignment: .leading, spacing: 1) {
+//                                        ChatName(name: userDetails.name, font: .semiBoldFont(15), verified: userDetails.verified, iconSize: 19)
+//                                        if let action = userDetails.action {
+//                                            Text(action)
+//                                                .font(.regularFont(12))
+//                                                .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
+//                                        } else if userDetails.active ?? false {
+//                                            Text("Online")
+//                                                .font(.regularFont(12))
+//                                                .foregroundColor(Color(red: 0, green: 0.67, blue: 0.11))
+//                                        } else if userDetails.chatType == "group" {
+//                                            Text("tap here for group info")
+//                                                .font(.regularFont(12))
+//                                                .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
+//                                        } else if let lastActive = userDetails.lastActive?.onlineDateFormat {
+//                                            Text("last seen \(lastActive)")
+//                                                .font(.regularFont(12))
+//                                                .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
+//                                        } else {
+//                                            Text("tap here for friend info")
+//                                                .font(.regularFont(12))
+//                                                .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
+//                                        }
+//                                    }
+//
+//                                    Spacer()
+//                                }.frame(width: UIScreen.screenWidth-160)
+//                            })
+//                    }
+//                    ToolbarItem(placement: .navigationBarTrailing) {
+//                        HStack(spacing: 15) {
+//
+//                            if deleteMode == .active {
+//                                Text("Cancel").foregroundColor(.blue).font(.semiBoldFont(18)).minimumScaleFactor(0.1)
+//                                    .onTapGesture {
+//                                        if let chat = observed.userChatDataArray{
+//                                            for chatData in chat {
+//                                                if let index = observed.userChatDataArray?.firstIndex(of: chatData) {
+//                                                    observed.userChatDataArray?[index].isSelected = false
+//                                                }
+//                                            }
+//                                        }
+//                                        deleteMode.toggle()
+//                                    }
+//                            } else if forwardMode == .active {
+//                                Text("Cancel").foregroundColor(.blue).font(.semiBoldFont(18)).minimumScaleFactor(0.1)
+//                                    .onTapGesture {
+//                                        if let chat = observed.userChatDataArray{
+//                                            for chatData in chat {
+//                                                if let index = observed.userChatDataArray?.firstIndex(of: chatData) {
+//                                                    observed.userChatDataArray?[index].isSelected = false
+//                                                }
+//                                            }
+//                                        }
+//                                        forwardMode.toggle()
+//                                    }
+//                            } else {
+//                                Button {
+//                                    observed.toastMessage = "coming soon..."
+//                                } label: {
+//                                    Image("userPageCall", bundle: .module)
+//                                        .renderingMode(.template)
+//                                        .resizable()
+//                                        .aspectRatio(contentMode: .fit)
+//                                        .frame(width: 30, height: 30)
+//                                        .foregroundColor(Color(UIColor.label))
+//                                }
+//                                Button {
+//                                    observed.toastMessage = "coming soon..."
+//                                } label: {
+//                                    Image("userPageVideo", bundle: .module)
+//                                        .renderingMode(.template)
+//                                        .resizable()
+//                                        .aspectRatio(contentMode: .fit)
+//                                        .frame(width: 30, height: 30)
+//                                        .foregroundColor(Color(UIColor.label))
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            .environmentObject(presentContactView).environmentObject(observed).navigationBarTitle(userDetails.name)
+//
+//            //MARK: SOCKETS
+//
+//            //Chat Block
+//            .onChange(of: socketIO.chatBlock, perform: { chatResponse in
+//                if let chatResponse = chatResponse, chatResponse.chat?.contains(userDetails.id) == true {
+//                    observed.userChat?.blocked = true
+//
+//                    socketIO.chatBlock = nil
+//                }
+//            })
+//
+//            //Chat Unblock
+//            .onChange(of: socketIO.chatUnblock, perform: { chatResponse in
+//                if let chatResponse = chatResponse, chatResponse.chat?.contains(userDetails.id) == true {
+//                    observed.userChat?.blocked = false
+//
+//                    socketIO.chatBlock = nil
+//                }
+//            })
+//
+//            //Edit Message
+//            .onChange(of: socketIO.messageEdited) { userChatData in
+//                if let userChatData = userChatData,
+//                   let index = observed.userChatDataArray?.firstIndex(where: { $0.id == userChatData.id }) {
+//                    observed.userChatDataArray?[index] = userChatData
+//
+//                    socketIO.messageEdited = nil
+//                }
+//            }
+//
+//            //New Message
+//            .onChange(of: socketIO.newMessageArray) { userChatDataArray in
+//
+//                if let userChatData = userChatDataArray?.first,
+//                    userChatData.sender == userDetails.id || userChatData.receiver == userDetails.id {
+//                    observed.userChatData = userChatData
+//                    observed.userChatDataArray?.append(userChatData)
+//                }
+//                observed.changeDataModel()
+//                let json = [
+//                    "chat": userDetails.id,
+//                    "receiverType": userDetails.chatType ?? "user"
+//                ]
+//                socketIO.defaultUserSocket?.emit(CircuitChatSocketEvents.message_seen.rawValue, json)
+//            }
+//
+//            //Message Deleted for me
+//            .onChange(of: socketIO.messageDeleted) { messageDeleted in
+//                if let messageId = messageDeleted?.first?.first,
+//                   let index = observed.userChatDataArray?.firstIndex(where: { $0.id == messageId }) {
+//                    observed.userChatDataArray?.remove(at: index)
+//                }
+//            }
+//
+//            //Message Deleted for everyone
+//            .onChange(of: socketIO.messageDeletedEveryone) { messageDeletedEveryone in
+//                if let messageDeletedEveryone = messageDeletedEveryone?.first,
+//                   let index = observed.userChatDataArray?.firstIndex(where: { $0.id == messageDeletedEveryone.id }) {
+//                    observed.userChatDataArray?[index] = messageDeletedEveryone
+//                    observed.userChatData = messageDeletedEveryone
+//                }
+//            }
+//
+//            //Message Received
+//            .onChange(of: socketIO.messageRecieved) { messageRecieved in
+//                if let messageRecieved = messageRecieved?.first,
+//                   let index = observed.userChatDataArray?.firstIndex(where: { $0.id == messageRecieved }) {
+//                    observed.userChatDataArray?[index].messageStatus = 2
+//                }
+//            }
+//
+//            //Message Seen
+//            .onChange(of: socketIO.messageSeen) { messageSeen in
+//                if let messageSeenArray = messageSeen?.first {
+//                    observed.userChatDataArray?.enumerated().forEach { index, chatData in
+//                        if let chatId = chatData.id, messageSeenArray.contains(chatId) {
+//                            observed.userChatDataArray?[index].messageStatus = 3
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
     
     @ViewBuilder
