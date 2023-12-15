@@ -32,6 +32,7 @@ struct UserChat: Codable {
     let footerDialog: [DialogView]?
     var blocked: Bool?
     let unBlock: DialogView?
+    let closeEdit: String?
     
     enum CodingKeys: String, CodingKey {
         case data = "messages"
@@ -50,6 +51,7 @@ struct UserChat: Codable {
         case footerDialog
         case blocked
         case unBlock
+        case closeEdit
     }
 }
 
@@ -119,6 +121,7 @@ struct UserChatData: Codable, Identifiable, Equatable, Hashable {
         case reply = "reply"
         case dialog
         case message
+        
         case forward
 //        case boxedReference = "forward"
     }

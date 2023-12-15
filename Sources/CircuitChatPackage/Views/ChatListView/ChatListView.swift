@@ -153,6 +153,52 @@ struct ChatListView: View {
         
         //MARK: SOCKET
         
+        //Edit Message
+        .onChange(of: socketIO.messageEdited) { editMessage in
+            if let editMessage  = editMessage {
+                var id = editMessage.receiver
+                if id == circuitChatUID {
+                    id = editMessage.sender
+                }
+                
+                if let index = chatObserved.apiResponse?.menu.chats.firstIndex(where: { $0.chat.id == id }) {
+                    let checkPinnedMessages = chatObserved.apiResponse?.menu.chats.filter{ ($0.pin ?? false && $0.id != id) }.count ?? 0
+                    let unreadCount = Int(chatObserved.apiResponse?.menu.chats[index].unread ?? 0)
+                    chatObserved.apiResponse?.menu.chats[index].chat.action = nil
+                    chatObserved.apiResponse?.menu.chats[index].userChatData = editMessage
+                    chatObserved.apiResponse?.menu.chats[index].fromMe = true
+                    if editMessage.sender != circuitChatUID {
+                        chatObserved.apiResponse?.menu.chats[index].unread = unreadCount + 1
+                        chatObserved.apiResponse?.menu.chats[index].fromMe = false
+                    } else {
+                        chatObserved.apiResponse?.menu.chats[index].fromMe = true
+                    }
+                    
+                    if let data = observed.apiResponse?.menu.chats[index] {
+                        chatObserved.apiResponse?.menu.chats.remove(at: index)
+                        chatObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
+                    }
+                } else if let index = archivedObserved.apiResponse?.menu.chats.firstIndex(where: { $0.chat.id == id }) {
+                    let checkPinnedMessages = archivedObserved.apiResponse?.menu.chats.filter{ ($0.pin ?? false && $0.id != id) }.count ?? 0
+                    let unreadCount = Int(archivedObserved.apiResponse?.menu.chats[index].unread ?? 0)
+                    archivedObserved.apiResponse?.menu.chats[index].chat.action = nil
+                    archivedObserved.apiResponse?.menu.chats[index].userChatData = editMessage
+                    
+                    if editMessage.sender != circuitChatUID {
+                        archivedObserved.apiResponse?.menu.chats[index].unread = unreadCount + 1
+                        archivedObserved.apiResponse?.menu.chats[index].fromMe = false
+                    } else {
+                        archivedObserved.apiResponse?.menu.chats[index].fromMe = true
+                    }
+                    
+                    if let data = archivedObserved.apiResponse?.menu.chats[index] {
+                        archivedObserved.apiResponse?.menu.chats.remove(at: index)
+                        archivedObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
+                    }
+                }
+            }
+        }
+        
         //New Message
         .onChange(of: socketIO.newMessageArray, perform: { newMessageArray in
             if let newMessageArray = newMessageArray {

@@ -118,7 +118,7 @@ struct MessageView: View {
                     showImageView.toggle()
                 }
                 .background(
-                    NavigationLink(destination: ShowImage(url: chatDetail.media), isActive: $showImageView) {
+                    NavigationLink(destination: ShowVideo(url: chatDetail.media ?? ""), isActive: $showImageView) {
                         EmptyView()
                     }.opacity(0)
                 )
@@ -459,6 +459,10 @@ struct MessageView: View {
     var timeSeenView: some View {
         HStack(spacing: 3) {
             Spacer()
+            
+            if chatDetail.edited ?? false {
+                Text("Edited")
+            }
             
             if chatDetail.starred ?? false {
                 Image(systemName: "star.fill")

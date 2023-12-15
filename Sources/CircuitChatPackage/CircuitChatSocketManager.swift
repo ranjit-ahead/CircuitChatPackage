@@ -34,6 +34,7 @@ enum CircuitChatSocketEvents: String {
     case chat_pin
     case chat_unpin
     case unread_count
+    case message_edited
 }
 
 class CircuitChatSocketManager: ObservableObject {
@@ -65,6 +66,8 @@ class CircuitChatSocketManager: ObservableObject {
     
     @Published var unreadCount: SocketChatResponse?
     
+    @Published var messageEdited: UserChatData?
+    
     func connectSocket() {
         var config = SocketIOClientConfiguration()
 //        config.insert(.log(true))
@@ -94,6 +97,13 @@ class CircuitChatSocketManager: ObservableObject {
                 if let id = userChatData.id {
                     socket.emit(CircuitChatSocketEvents.message_received.rawValue, id)
                 }
+            }
+        })
+        
+        //MARK: Message Edited
+        socketMapping(CircuitChatSocketEvents.message_edited.rawValue, model: [UserChatData].self, completion: { type in
+            if let userChatData = type.first {
+                self.messageEdited = userChatData
             }
         })
 

@@ -50,6 +50,8 @@ struct UserChatDetail: View {
     
     @State private var reportBlockDialog: DialogView?
     
+    @State private var editingMessage = false
+    
     var userDetails: Chat?
     var password: String?
     var contentType = "text"
@@ -416,6 +418,14 @@ struct UserChatDetail: View {
                 }
             })
             
+            //Edit Message
+            .onChange(of: socketIO.messageEdited) { userChatData in
+                if let userChatData = userChatData,
+                   let index = observed.userChatDataArray?.firstIndex(where: { $0.id == userChatData.id }) {
+                    observed.userChatDataArray?[index] = userChatData
+                }
+            }
+            
             //New Message
             .onChange(of: socketIO.newMessageArray) { userChatDataArray in
                 
@@ -586,24 +596,35 @@ struct UserChatDetail: View {
         //Custom TextField
 
             HStack {
-                Button {
-                    if observed.userChat?.blocked ?? false {
-                        if let unblock = observed.userChat?.unBlock {
-                            reportBlockDialog = unblock
-                        }
-                    } else {
-                        addMoreOptions.toggle()
+                if editingMessage {
+                    Button {
+                        newMessageText = ""
+                        editingMessage.toggle()
+                    } label: {
+                        ImageDownloader(observed.userChat?.closeEdit, renderMode: .template)
+                            .frame(width: 34, height: 34)
+                            .foregroundColor(.red)
                     }
-                } label: {
-                    Image("addCircleIcon", bundle: .module)
-                        .renderingMode(.template)
-                        .resizable()
-                        .frame(width: 34, height: 34)
-                        .aspectRatio(contentMode: .fill)
-                        .foregroundColor(Color(UIColor.label))
-                }
-                .sheet(isPresented: $isDocumentPickerPresented) {
-                    DocumentPicker(selectedDocumentURL: $selectedDocumentURL)
+                } else {
+                    Button {
+                        if observed.userChat?.blocked ?? false {
+                            if let unblock = observed.userChat?.unBlock {
+                                reportBlockDialog = unblock
+                            }
+                        } else {
+                            addMoreOptions.toggle()
+                        }
+                    } label: {
+                        Image("addCircleIcon", bundle: .module)
+                            .renderingMode(.template)
+                            .resizable()
+                            .frame(width: 34, height: 34)
+                            .aspectRatio(contentMode: .fill)
+                            .foregroundColor(Color(UIColor.label))
+                    }
+                    .sheet(isPresented: $isDocumentPickerPresented) {
+                        DocumentPicker(selectedDocumentURL: $selectedDocumentURL)
+                    }
                 }
 
                 ZStack(alignment: .trailing) {
@@ -632,16 +653,18 @@ struct UserChatDetail: View {
                             }
                         }
                     })
-                    Button {
-                        observed.toastMessage = "coming soon..."
-                    } label: {
-                        Image("attachFile", bundle: .module)
-                            .renderingMode(.template)
-                            .resizable()
-                            .frame(width: 26, height: 26)
-                            .aspectRatio(contentMode: .fill)
-                            .padding(.trailing)
-                            .foregroundColor(Color(UIColor.label))
+                    if !editingMessage {
+                        Button {
+                            observed.toastMessage = "coming soon..."
+                        } label: {
+                            Image("attachFile", bundle: .module)
+                                .renderingMode(.template)
+                                .resizable()
+                                .frame(width: 26, height: 26)
+                                .aspectRatio(contentMode: .fill)
+                                .padding(.trailing)
+                                .foregroundColor(Color(UIColor.label))
+                        }
                     }
                 }
 //                .frame(height: 44)
@@ -656,6 +679,15 @@ struct UserChatDetail: View {
                             .frame(width: 30, height: 30)
                             .clipped()
                     }
+                } else if editingMessage {
+                    Button(action: sendMessage) {
+                        Image("sendIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 30, height: 30)
+                            .clipped()
+                    }
+                    .disabled(true)
                 } else {
                     Button {
                         if observed.userChat?.blocked ?? false {

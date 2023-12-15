@@ -123,6 +123,21 @@ import UIKit
             }
         }
         
+        func editMessage(_ text: String) {
+            let bodyData: [String:Any] = [
+                "messageID" : self.userChatData?.id ?? "",
+                "text" : text
+            ]
+            circuitChatRequest("/message/edit", method: .post, bodyData: bodyData, model: SuccessMessage.self) { result in
+                switch result {
+                case .success(let data):
+                    self.toastMessage = data.message
+                case .failure(let error):
+                    print("Error fetching chat messages: \(error.localizedDescription)")
+                }
+            }
+        }
+        
         func sendMessage(selectedMedia: SelectedMedia? = nil, imageURLs: [URL]? = nil, videoURL: URL? = nil, audioURL: URL? = nil, docURL: URL? = nil, to: String, contentType: String, text: String? = nil, receiverType: String, replyMessage: UserChatData? = nil) {
             
             var bodyData: [String:Any] = [
