@@ -20,7 +20,7 @@ struct ChatItem: View {
                 
                 if editMode == .active {
                     if item.isSelected ?? false {
-                        Image("selectedTickIcon")
+                        Image("selectedTickIcon", bundle: .module)
                             .imageIconModifier(imageSize: 14, iconSize: 24, imageColor: Color.white, color: .blue)
                     } else {
                         Circle()
@@ -63,20 +63,20 @@ struct ChatItem: View {
                                     if (item.senderDetails?.id == circuitChatUID) || (item.fromMe ?? false) {
                                         if let messageStatus = item.userChatData?.messageStatus {
                                             if messageStatus == 2 {
-                                                Image("receivedStatusIcon")
+                                                Image("receivedStatusIcon", bundle: .module)
                                                     .resizable()
                                                     .frame(width: 13.97447, height: 8)
                                             } else if messageStatus == 3 {
-                                                Image("seenStatusIcon")
+                                                Image("seenStatusIcon", bundle: .module)
                                                     .resizable()
                                                     .frame(width: 13.97447, height: 8)
                                             } else {
-                                                Image("sentStatusIcon")
+                                                Image("sentStatusIcon", bundle: .module)
                                                     .resizable()
                                                     .frame(width: 12.22766, height: 7)
                                             }
                                         } else {
-                                            Image("sentStatusIcon")
+                                            Image("sentStatusIcon", bundle: .module)
                                                 .resizable()
                                                 .frame(width: 12.22766, height: 7)
                                         }
@@ -141,12 +141,12 @@ struct ChatItem: View {
                         
                         HStack {
                             if item.pin ?? false {
-                                Image("pin")
+                                Image("pin", bundle: .module)
                                     .resizable()
                                     .frame(width: 17, height: 17)
                             }
                             if item.mute ?? false {
-                                Image("mute")
+                                Image("mute", bundle: .module)
                                     .resizable()
                                     .frame(width: 17, height: 17)
                             }

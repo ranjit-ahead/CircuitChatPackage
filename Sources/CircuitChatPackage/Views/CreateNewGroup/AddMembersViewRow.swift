@@ -40,7 +40,7 @@ struct AddMembersViewRow: View {
                 Spacer()
                 
                 if self.isSelected {
-                    Image("selectedTickIcon")
+                    Image("selectedTickIcon", bundle: .module)
                         .resizable()
                         .frame(width: 14, height: 14)
                         .background(content: {

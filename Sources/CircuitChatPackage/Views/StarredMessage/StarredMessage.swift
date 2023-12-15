@@ -29,7 +29,7 @@ struct StarredMessage: View {
                                 .padding(.horizontal)
                         } else {
                             VStack {
-                                Image("star")
+                                Image("star", bundle: .module)
                                     .imageIconModifier(imageSize: 48, iconSize: 110, color: Color(red: 0.95, green: 0.95, blue: 0.95))
                                 Text("No Starred Message")
                                     .font(.semiBoldFont(20))
@@ -120,7 +120,7 @@ struct StarredMessage: View {
                     HStack {
                         if editMode == .active {
                             if chat.isSelected ?? false {
-                                Image("selectedTickIcon")
+                                Image("selectedTickIcon", bundle: .module)
                                     .imageIconModifier(imageSize: 14, iconSize: 24, imageColor: Color.white, color: .blue)
                             } else {
                                 Circle()

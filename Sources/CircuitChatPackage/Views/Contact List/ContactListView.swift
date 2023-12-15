@@ -52,7 +52,7 @@ struct ContactListView: View {
                                 }
                                 Spacer()
                                 if selectedContacts.contains(contact) {
-                                    Image("selectedTickIcon")
+                                    Image("selectedTickIcon", bundle: .module)
                                         .resizable()
                                         .frame(width: 14, height: 14)
                                         .background(content: {

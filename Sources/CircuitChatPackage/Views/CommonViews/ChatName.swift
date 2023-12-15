@@ -41,7 +41,7 @@ struct VerifiedIcon: View {
             .foregroundColor(.clear)
             .frame(width: width, height: height)
             .background(
-                Image("verifiedIcon")
+                Image("verifiedIcon", bundle: .module)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: width, height: height)

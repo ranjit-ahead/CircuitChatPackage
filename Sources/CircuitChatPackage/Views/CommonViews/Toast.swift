@@ -20,7 +20,7 @@ struct Toast: View {
             }
         }
         return HStack {
-            Image("checkCircleGreen")
+            Image("checkCircleGreen", bundle: .module)
                 .imageIconModifier(imageSize: 24, iconSize: 24, color: Color.clear)
             Text(isShowing ?? "")
         }

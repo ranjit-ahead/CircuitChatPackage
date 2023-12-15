@@ -128,7 +128,7 @@ struct CreateNewGroupView: View {
                             Text(privacySelection?.label ?? apiResponse?.menu.createNewGroup?.selectType?.select ?? "")
                                 .font(placeholderFont)
                                 .foregroundColor(placeholderColor)
-                            Image("rightArrow")
+                            Image("rightArrow", bundle: .module)
                                 .resizable()
                                 .foregroundColor(placeholderColor)
                                 .frame(width: 20, height: 20)
@@ -213,7 +213,7 @@ struct CreateNewGroupView: View {
                 Button(action: {
                     dismiss()
                 }) {
-                    Image("leftArrow")
+                    Image("leftArrow", bundle: .module)
                         .resizable()
                         .frame(width: 28, height: 28)
                 }

@@ -163,7 +163,7 @@ struct MapView: View {
                                 sendMessage(locationType: "live_location", lat: lat, lng: lng, duration: durationTime, text: searchText)
                                 dismiss()
                             } label: {
-                                Image("sendIcon")
+                                Image("sendIcon", bundle: .module)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 44, height: 44)
@@ -172,7 +172,7 @@ struct MapView: View {
                         }
                         HStack(spacing: 0) {
                             Spacer()
-                            Image("rightArrow")
+                            Image("rightArrow", bundle: .module)
                                 .resizable()
                                 .frame(width: 17, height: 17)
                             Text(userChat?.name ?? "")
@@ -184,7 +184,7 @@ struct MapView: View {
                 } else {
                     List {
                         LazyHStack {
-                            Image("liveLocation")
+                            Image("liveLocation", bundle: .module)
                                 .resizable()
                                 .frame(width: 26, height: 26)
                                 .aspectRatio(contentMode: .fit)
@@ -200,7 +200,7 @@ struct MapView: View {
                         Section(header: Text("Nearby Places").textCase(nil)) {
                             
                             LazyHStack {
-                                Image("currentLocation")
+                                Image("currentLocation", bundle: .module)
                                     .resizable()
                                     .frame(width: 42, height: 42)
                                     .aspectRatio(contentMode: .fit)

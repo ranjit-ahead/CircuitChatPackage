@@ -64,7 +64,7 @@ struct MessageView: View {
                 ZStack(alignment: .bottomTrailing) {
                     Rectangle()
                         .cornerRadius(8)
-                    Image("chat_right_arrow")
+                    Image("chat_right_arrow", bundle: .module)
                         .renderingMode(.template)
                         .resizable()
                         .frame(width: 19, height: 19)
@@ -81,7 +81,7 @@ struct MessageView: View {
                     Rectangle()
                         .cornerRadius(8)
                     if chatDetail.senderDetails?.avatar != "" || chatType=="user" {
-                        Image("chat_left_arrow")
+                        Image("chat_left_arrow", bundle: .module)
                             .renderingMode(.template)
                             .resizable()
                             .frame(width: 19, height: 19)
@@ -352,7 +352,7 @@ struct MessageView: View {
                 
                 if chatDetail.location?.locationType=="live_location" {
                     HStack {
-                        Image("liveLocation")
+                        Image("liveLocation", bundle: .module)
                             .renderingMode(.template)
                             .resizable()
                             .frame(width: 16, height: 16)
@@ -407,7 +407,7 @@ struct MessageView: View {
                 
                 Spacer()
                 
-                Image("rightArrow")
+                Image("rightArrow", bundle: .module)
                     .resizable()
                     .frame(width: 17, height: 17)
             }
@@ -473,16 +473,16 @@ struct MessageView: View {
             if fromMe {
                 //Message Status
                 if chatDetail.messageStatus == 2 {
-                    Image("receivedStatusIcon")
+                    Image("receivedStatusIcon", bundle: .module)
                         .renderingMode(.template)
                         .resizable()
                         .frame(width: 13.97447, height: 8)
                 } else if chatDetail.messageStatus == 3 {
-                    Image("seenStatusIcon")
+                    Image("seenStatusIcon", bundle: .module)
                         .resizable()
                         .frame(width: 13.97447, height: 8)
                 } else {
-                    Image("sentStatusIcon")
+                    Image("sentStatusIcon", bundle: .module)
                         .renderingMode(.template)
                         .resizable()
                         .frame(width: 12.22766, height: 7)

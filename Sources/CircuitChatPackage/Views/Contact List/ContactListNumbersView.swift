@@ -73,7 +73,7 @@ struct ContactListNumbersView: View {
                         ForEach(selectedContactNumbers.numbers, id: \.self) { phoneNumber in
                             HStack(spacing: 5) {
                                 if phoneNumber.selected == true {
-                                    Image("selectedTickIcon")
+                                    Image("selectedTickIcon", bundle: .module)
                                         .resizable()
                                         .padding(5)
                                         .frame(width: 24, height: 24)

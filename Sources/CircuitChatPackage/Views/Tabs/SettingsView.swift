@@ -51,7 +51,7 @@ struct SettingsView: View {
                         StarredMessage(chatId: observed.data?.data.id, chatType: "user").toolbarRole(.editor)
                     }, label: {
                         LazyHStack {
-                            Image("star")
+                            Image("star", bundle: .module)
                                 .imageIconModifier(imageSize: 24, iconSize: 40, imageColor: .blue, color: Color(.systemGray6))
                             Text("Starred Message")
                         }
@@ -60,7 +60,7 @@ struct SettingsView: View {
                         //
                     }, label: {
                         LazyHStack {
-                            Image("faceCircle")
+                            Image("faceCircle", bundle: .module)
                                 .imageIconModifier(imageSize: 24, iconSize: 40, imageColor: .blue, color: Color(.systemGray6))
                             Text("Account Setting")
                         }
@@ -69,7 +69,7 @@ struct SettingsView: View {
                         //StarredMessage(userDetails: userDetails).toolbarRole(.editor)
                     }, label: {
                         LazyHStack {
-                            Image("tickShield")
+                            Image("tickShield", bundle: .module)
                                 .imageIconModifier(imageSize: 24, iconSize: 40, imageColor: .blue, color: Color(.systemGray6))
                             Text("Privacy Policy")
                         }
@@ -78,7 +78,7 @@ struct SettingsView: View {
                         //StarredMessage(userDetails: userDetails).toolbarRole(.editor)
                     }, label: {
                         LazyHStack {
-                            Image("notificationBell")
+                            Image("notificationBell", bundle: .module)
                                 .imageIconModifier(imageSize: 24, iconSize: 40, imageColor: .blue, color: Color(.systemGray6))
                             Text("Notifications")
                         }
@@ -89,7 +89,7 @@ struct SettingsView: View {
                         }
                     }, label: {
                         LazyHStack {
-                            Image("iIcon")
+                            Image("iIcon", bundle: .module)
                                 .imageIconModifier(imageSize: 24, iconSize: 40, imageColor: .blue, color: Color(.systemGray6))
                             Text("About")
                         }
@@ -98,7 +98,7 @@ struct SettingsView: View {
                         //StarredMessage(userDetails: userDetails).toolbarRole(.editor)
                     }, label: {
                         LazyHStack {
-                            Image("shareIcon")
+                            Image("shareIcon", bundle: .module)
                                 .imageIconModifier(imageSize: 24, iconSize: 40, imageColor: .blue, color: Color(.systemGray6))
                             Text("Share")
                         }
@@ -107,7 +107,7 @@ struct SettingsView: View {
                         //StarredMessage(userDetails: userDetails).toolbarRole(.editor)
                     }, label: {
                         LazyHStack {
-                            Image("userStarsIcon")
+                            Image("userStarsIcon", bundle: .module)
                                 .imageIconModifier(imageSize: 24, iconSize: 40, imageColor: .blue, color: Color(.systemGray6))
                             Text("Rate us")
                         }

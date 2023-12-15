@@ -372,7 +372,7 @@ struct UserChatDetail: View {
                                 Button {
                                     observed.toastMessage = "coming soon..."
                                 } label: {
-                                    Image("userPageCall")
+                                    Image("userPageCall", bundle: .module)
                                         .renderingMode(.template)
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
@@ -382,7 +382,7 @@ struct UserChatDetail: View {
                                 Button {
                                     observed.toastMessage = "coming soon..."
                                 } label: {
-                                    Image("userPageVideo")
+                                    Image("userPageVideo", bundle: .module)
                                         .renderingMode(.template)
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
@@ -595,7 +595,7 @@ struct UserChatDetail: View {
                         addMoreOptions.toggle()
                     }
                 } label: {
-                    Image("addCircleIcon")
+                    Image("addCircleIcon", bundle: .module)
                         .renderingMode(.template)
                         .resizable()
                         .frame(width: 34, height: 34)
@@ -635,7 +635,7 @@ struct UserChatDetail: View {
                     Button {
                         observed.toastMessage = "coming soon..."
                     } label: {
-                        Image("attachFile")
+                        Image("attachFile", bundle: .module)
                             .renderingMode(.template)
                             .resizable()
                             .frame(width: 26, height: 26)
@@ -650,7 +650,7 @@ struct UserChatDetail: View {
 
                 if !newMessageText.isEmpty || selectedVideoURL != nil || selectedDocumentURL != nil {
                     Button(action: sendMessage) {
-                        Image("sendIcon")
+                        Image("sendIcon", bundle: .module)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 30, height: 30)
@@ -671,7 +671,7 @@ struct UserChatDetail: View {
                             .foregroundColor(.clear)
                             .frame(width: 34, height: 34)
                             .background(
-                                Image("cameraIcon")
+                                Image("cameraIcon", bundle: .module)
                                     .renderingMode(.template)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
@@ -887,7 +887,7 @@ struct UserChatDetail: View {
                     
                     if deleteMode == .active || forwardMode == .active {
                         if chat.isSelected ?? false {
-                            Image("selectedTickIcon")
+                            Image("selectedTickIcon", bundle: .module)
                                 .imageIconModifier(imageSize: 14, iconSize: 24, imageColor: Color.white, color: .blue)
                                 .frame(alignment: .center)
                         } else {

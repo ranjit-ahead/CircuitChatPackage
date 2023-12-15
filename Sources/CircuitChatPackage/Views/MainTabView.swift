@@ -57,7 +57,7 @@ struct MainTabView: View {
             StoriesView()
                 .tabItem {
                     VStack {
-                        Image("stories").renderingMode(.template)
+                        Image("stories", bundle: .module).renderingMode(.template)
                         Text(data.label ?? "")
                     }
                 }
@@ -66,7 +66,7 @@ struct MainTabView: View {
             CallsView()
                 .tabItem {
                     VStack {
-                        Image("call").renderingMode(.template)
+                        Image("call", bundle: .module).renderingMode(.template)
                         Text(data.label ?? "")
                     }
                 }
@@ -75,7 +75,7 @@ struct MainTabView: View {
             ChatView(apiRequest: ApiRequest(apiURL: data.apiURL, method: data.apiMethod))
             .tabItem {
                 VStack {
-                    Image(selection == 0 ? "chatfill" : "chat").renderingMode(.template)
+                    Image(selection == 0 ? "chatfill" : "chat", bundle: .module).renderingMode(.template)
                     Text(data.label ?? "")
                 }
             }
@@ -85,7 +85,7 @@ struct MainTabView: View {
             SettingsView()
                 .tabItem {
                     VStack {
-                        Image("setting").renderingMode(.template)
+                        Image("setting", bundle: .module).renderingMode(.template)
                         Text(data.label ?? "")
                     }
                 }

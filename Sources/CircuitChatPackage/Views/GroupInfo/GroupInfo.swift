@@ -56,7 +56,7 @@ struct GroupInfo: View {
                                 
                             } label: {
                                 LazyVStack {
-                                    Image("groupCall")
+                                    Image("groupCall", bundle: .module)
                                         .imageIconModifier(imageSize: 32, iconSize: 32, color: Color.clear)
                                     Text("Call")
                                         .font(.regularFont(15))
@@ -100,7 +100,7 @@ struct GroupInfo: View {
                                         .font(.regularFont(15))
                                         .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
                                     Spacer(minLength: 1)
-                                    Image("rightArrow")
+                                    Image("rightArrow", bundle: .module)
                                         .resizable()
                                         .frame(width: 20, height: 20)
                                 }
@@ -120,7 +120,7 @@ struct GroupInfo: View {
                             MediaLinksDocs(userDetails: userDetails).toolbarRole(.editor)
                         }, label: {
                             LazyHStack {
-                                Image("mediaLinksDocs")
+                                Image("mediaLinksDocs", bundle: .module)
                                     .imageIconModifier(imageSize: 22, iconSize: 40, color: Color.blue)
                                 Text("Media, Links, and Docs")
                                     .font(.regularFont(16))
@@ -130,7 +130,7 @@ struct GroupInfo: View {
                             StarredMessage(chatId: userDetails.id, chatName: userDetails.name, chatType: userDetails.chatType).toolbarRole(.editor)
                         }, label: {
                             LazyHStack {
-                                Image("star")
+                                Image("star", bundle: .module)
                                     .imageIconModifier(imageSize: 24, iconSize: 40, color: Color.orange)
                                 Text("Starred Message")
                             }
@@ -215,7 +215,7 @@ struct GroupInfo: View {
                             
                         } label: {
                             LazyHStack {
-                                Image("wallpaperSound")
+                                Image("wallpaperSound", bundle: .module)
                                     .imageIconModifier(imageSize: 25, iconSize: 40, color: Color(.systemGray6))
                                 Text("Wallpaper & Sound")
                             }
@@ -224,7 +224,7 @@ struct GroupInfo: View {
                             
                         } label: {
                             LazyHStack {
-                                Image("themeEllipse")
+                                Image("themeEllipse", bundle: .module)
                                     .imageIconModifier(imageSize: 28, iconSize: 40, color: Color(.systemGray6))
                                 Text("Change Theme")
                             }
@@ -236,7 +236,7 @@ struct GroupInfo: View {
                             
                         } label: {
                             LazyHStack {
-                                Image("groupSetting")
+                                Image("groupSetting", bundle: .module)
                                     .imageIconModifier(imageSize: 28, iconSize: 40, color: Color(.systemGray6))
                                 Text("Group Settings")
                             }

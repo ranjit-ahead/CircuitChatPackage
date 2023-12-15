@@ -186,7 +186,7 @@ struct ShowMediaSelected: View {
                     }
                     
                     Button(action: sendMessage) {
-                        Image("sendIcon")
+                        Image("sendIcon", bundle: .module)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 36, height: 36)
