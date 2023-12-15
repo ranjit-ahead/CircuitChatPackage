@@ -113,7 +113,7 @@ struct ChatListView: View {
                 Button {
                     dismiss()
                 } label: {
-                    Image(uiImage: UIImage(named: "leftArrow", in: Bundle.main, with: nil)!)
+                    Image("leftArrow")
                         .resizable()
                         .frame(width: 28, height: 28)
                 }

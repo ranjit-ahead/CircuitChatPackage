@@ -30,7 +30,11 @@ let package = Package(
                 .product(name: "Alamofire", package: "Alamofire"),
                 .product(name: "SocketIO", package: "socket.io-client-swift"),
                 .product(name: "Kingfisher", package: "Kingfisher")
-            ]),
+            ],
+            resources: [
+                .process("Resources")
+            ]
+        ),
         .testTarget(
             name: "CircuitChatPackageTests",
             dependencies: ["CircuitChatPackage"]),
