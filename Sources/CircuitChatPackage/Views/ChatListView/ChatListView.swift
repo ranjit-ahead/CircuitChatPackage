@@ -113,7 +113,7 @@ struct ChatListView: View {
                 Button {
                     dismiss()
                 } label: {
-                    Image("leftArrow")
+                    Image("leftArrow", bundle: .module)
                         .resizable()
                         .frame(width: 28, height: 28)
                 }
