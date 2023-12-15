@@ -92,8 +92,9 @@ struct UserChatData: Codable, Identifiable, Equatable, Hashable {
     var isSelected: Bool? = false
     var message: String?
     
-    var forward: UserChatData? { boxedReference?.wrappedValue }
-    let boxedReference: Box<UserChatData>?
+    var forward: Bool?
+//    var forward: UserChatData? { boxedReference?.wrappedValue }
+//    let boxedReference: Box<UserChatData>?
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
@@ -118,7 +119,8 @@ struct UserChatData: Codable, Identifiable, Equatable, Hashable {
         case reply = "reply"
         case dialog
         case message
-        case boxedReference = "forward"
+        case forward
+//        case boxedReference = "forward"
     }
     
     var uniqueId: String {

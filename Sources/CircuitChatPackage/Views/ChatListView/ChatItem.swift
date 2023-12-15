@@ -85,7 +85,7 @@ struct ChatItem: View {
                                 
                                 HStack {
                                     
-                                    let userChatData = item.userChatData?.forward ?? item.userChatData
+                                    let userChatData = item.userChatData
                                     
                                     let youText = apiResponse?.menu.you ?? "You"
                                     let userName = item.senderDetails?.id==circuitChatUID ? youText : (item.senderDetails?.name ?? "")

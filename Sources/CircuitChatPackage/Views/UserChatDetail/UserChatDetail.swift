@@ -65,11 +65,7 @@ struct UserChatDetail: View {
                             VStack {
                                 if let userChatDataArray = observed.userChatDataArray {
                                     ForEach(userChatDataArray) { chat in
-                                        if let forwardMessage = chat.forward {
-                                            getMessagesView(forwardMessage, forward: true, realChat: chat)
-                                        } else {
-                                            getMessagesView(chat, realChat: chat)
-                                        }
+                                        getMessagesView(chat)
                                     }
                                 }
                             }
@@ -865,7 +861,7 @@ struct UserChatDetail: View {
     }
     
     @ViewBuilder
-    func getMessagesView(_ chat: UserChatData, forward: Bool = false, realChat: UserChatData) -> some View {
+    func getMessagesView(_ chat: UserChatData) -> some View {
         VStack {
             if let contentType = chat.contentType, contentType == "notification" {
                 Text(chat.text ?? "").font(.regularFont(14))
@@ -890,7 +886,7 @@ struct UserChatDetail: View {
                 HStack {
                     
                     if deleteMode == .active || forwardMode == .active {
-                        if realChat.isSelected ?? false {
+                        if chat.isSelected ?? false {
                             Image("selectedTickIcon")
                                 .imageIconModifier(imageSize: 14, iconSize: 24, imageColor: Color.white, color: .blue)
                                 .frame(alignment: .center)
@@ -913,8 +909,8 @@ struct UserChatDetail: View {
                     }
                     let avatar = chat.senderDetails?.avatar
                     
-                    let fromMe = forward ? (realChat.fromMe ?? false) : (chat.fromMe ?? false)
-                    MessageView(fromMe: fromMe, forwardMessage: forward, chatDetail: chat, chatName: userDetails?.name ?? "", chatType: userDetails?.chatType ?? "", scrollToMessageId: $scrollToMessage)
+                    let fromMe = chat.fromMe ?? false
+                    MessageView(fromMe: fromMe, forwardMessage: chat.forward ?? false, chatDetail: chat, chatName: userDetails?.name ?? "", chatType: userDetails?.chatType ?? "", scrollToMessageId: $scrollToMessage)
                         .contentShape(ContentShapeKinds.contextMenuPreview, RoundedRectangle(cornerRadius: 8))
                         .frame(maxWidth: .infinity, alignment: fromMe ? .trailing : .leading)
                         .padding(fromMe ? .leading : .trailing, (UIScreen.screenWidth*1)/7)
@@ -924,7 +920,7 @@ struct UserChatDetail: View {
 //                            showReactionsBackground.toggle()
 //                        }
                         .contextMenu {
-                            if let dialog = chat.dialog ?? realChat.dialog, deleteMode == .inactive, forwardMode == .inactive {
+                            if let dialog = chat.dialog, deleteMode == .inactive, forwardMode == .inactive {
                                 ForEach(dialog) { button in
                                     dialogButtons(button, chat: chat)
                                 }
@@ -936,8 +932,8 @@ struct UserChatDetail: View {
         .contentShape(Rectangle())
         .onTapGesture {
             if deleteMode == .active || forwardMode == .active {
-                if let index = observed.userChatDataArray?.firstIndex(of: realChat) {
-                    observed.userChatDataArray?[index].isSelected = !(realChat.isSelected ?? false)
+                if let index = observed.userChatDataArray?.firstIndex(of: chat) {
+                    observed.userChatDataArray?[index].isSelected = !(chat.isSelected ?? false)
                 }
             } else {
                 UIApplication.shared.endEditing()
