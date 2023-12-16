@@ -91,9 +91,9 @@ struct ChatListView: View {
             } else {
                 searchBarView(apiResponse: observed.apiResponse)
                 
-                if let _ = observed.apiResponse.menu.chats {
+//                if let _ = observed.apiResponse.menu.chats {
                     chatList
-                }
+//                }
             }
         }
         .navigationDestination(isPresented: .constant(currentChatSelected != nil ? true : false)) {
