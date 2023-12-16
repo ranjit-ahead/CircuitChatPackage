@@ -643,59 +643,61 @@ struct ChatListView: View {
     
     var searchBarView: some View {
         HStack {
-            if let search = observed.apiResponse?.menu.search {
-                HStack {
-                    ImageDownloader(search.icon, renderMode: .template)
-                        .foregroundColor(Color(red: 0.56, green: 0.56, blue: 0.58))
-                        .frame(width: 18.4618, height: 18.7)
-                    
-                    TextField("", text: $searchText)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .font(.regularFont(17))
-                        .placeholder(when: searchText.isEmpty) {
-                            Text(search.label ?? "").foregroundColor(Color(red: 0.56, green: 0.56, blue: 0.58))
+            if let apiResponse = observed.apiResponse {
+                if let search = apiResponse.menu.search {
+                    HStack {
+                        ImageDownloader(search.icon, renderMode: .template)
+                            .foregroundColor(Color(red: 0.56, green: 0.56, blue: 0.58))
+                            .frame(width: 18.4618, height: 18.7)
+                        
+                        TextField("", text: $searchText)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .font(.regularFont(17))
+                            .placeholder(when: searchText.isEmpty) {
+                                Text(search.label ?? "").foregroundColor(Color(red: 0.56, green: 0.56, blue: 0.58))
+                            }
+                        
+                        if !searchText.isEmpty {
+                            Button(action: {
+                                searchText = ""
+                            }) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.gray)
+                            }
+                            .transition(.move(edge: .trailing))
+                            //.animation(.default)
                         }
-                    
-                    if !searchText.isEmpty {
-                        Button(action: {
-                            searchText = ""
-                        }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundColor(.gray)
-                        }
-                        .transition(.move(edge: .trailing))
-                        //.animation(.default)
                     }
+                    .frame(height: 42)
+                    .padding(.horizontal, 16)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .padding(.horizontal)
+                    .padding(.trailing, -8)
                 }
-                .frame(height: 42)
-                .padding(.horizontal, 16)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding(.horizontal)
-                .padding(.trailing, -8)
-            }
-            
-            if let filter = observed.apiResponse?.menu.filter {
-                Button {
-                    observed.apiResponse = nil
-                    observed.pageCount = 1
-                    observed.apiRequest = ApiRequest(apiURL: filter.apiURL, method: filter.apiMethod)
-                    observed.fetchApiData(apiRequest: observed.apiRequest)
-                } label : {
-                    ImageDownloader(filter.icon, renderMode: .template)
-                        .viewIconModifierSize(imageWidth: 24, imageHeight: 16, iconSize: 42, imageColor: Color(uiColor: .systemGray), iconColor: Color(.systemGray6))
-                        .padding(.trailing, 15)
-                }
-            } else if let filter = observed.apiResponse?.menu.filterIcon {
-                Button {
-                    observed.apiResponse = nil
-                    observed.pageCount = 1
-                    observed.apiRequest = ApiRequest(apiURL: filter.apiURL, method: filter.apiMethod)
-                    observed.fetchApiData(apiRequest: observed.apiRequest)
-                } label : {
-                    ImageDownloader(filter.icon)
-                        .frame(width: 42, height: 42)
-                        .padding(.trailing, 15)
+                
+                if let filter = apiResponse.menu.filter {
+                    Button {
+                        observed.apiResponse = nil
+                        observed.pageCount = 1
+                        observed.apiRequest = ApiRequest(apiURL: filter.apiURL, method: filter.apiMethod)
+                        observed.fetchApiData(apiRequest: observed.apiRequest)
+                    } label : {
+                        ImageDownloader(filter.icon, renderMode: .template)
+                            .viewIconModifierSize(imageWidth: 24, imageHeight: 16, iconSize: 42, imageColor: Color(uiColor: .systemGray), iconColor: Color(.systemGray6))
+                            .padding(.trailing, 15)
+                    }
+                } else if let filter = apiResponse.menu.filterIcon {
+                    Button {
+                        observed.apiResponse = nil
+                        observed.pageCount = 1
+                        observed.apiRequest = ApiRequest(apiURL: filter.apiURL, method: filter.apiMethod)
+                        observed.fetchApiData(apiRequest: observed.apiRequest)
+                    } label : {
+                        ImageDownloader(filter.icon)
+                            .frame(width: 42, height: 42)
+                            .padding(.trailing, 15)
+                    }
                 }
             }
         }
