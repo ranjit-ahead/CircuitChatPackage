@@ -11,10 +11,10 @@ import SwiftUI
 //extension ChatListView {
     class ChatListViewObserved: ObservableObject {
         
-        @Published var apiResponse: LastChatResponse?
-        @Published var apiRequest: ApiRequest?
+        @Published var apiResponse: LastChatResponse? = nil
+        @Published var apiRequest: ApiRequest? = nil
         
-        @Published var moreMenus: LastChatMoreMenu?
+        @Published var moreMenus: LastChatMoreMenu? = nil
         
         @Published var pageCount = 1
         @Published var limitCount = 15
