@@ -91,7 +91,9 @@ struct ChatListView: View {
     var body: some View {
         //        NavigationStack {
         VStack {
-            searchBarView
+            if let apiResponse = observed.apiResponse {
+                searchBarView(apiResponse: apiResponse)
+            }
             
             if observed.apiResponse == nil {
                 ProgressView()
@@ -641,9 +643,10 @@ struct ChatListView: View {
         })
     }
     
-    var searchBarView: some View {
+    @ViewBuilder
+    func searchBarView(apiResponse: LastChatResponse) -> some View {
         HStack {
-            if let search = observed.apiResponse?.menu.search {
+            if let search = apiResponse.menu.search {
                 HStack {
                     ImageDownloader(search.icon, renderMode: .template)
                         .foregroundColor(Color(red: 0.56, green: 0.56, blue: 0.58))
@@ -675,7 +678,7 @@ struct ChatListView: View {
                 .padding(.trailing, -8)
             }
             
-            if let filter = observed.apiResponse?.menu.filter {
+            if let filter = apiResponse.menu.filter {
                 Button {
                     observed.apiResponse = nil
                     observed.pageCount = 1
@@ -686,7 +689,7 @@ struct ChatListView: View {
                         .viewIconModifierSize(imageWidth: 24, imageHeight: 16, iconSize: 42, imageColor: Color(uiColor: .systemGray), iconColor: Color(.systemGray6))
                         .padding(.trailing, 15)
                 }
-            } else if let filter = observed.apiResponse?.menu.filterIcon {
+            } else if let filter = apiResponse.menu.filterIcon {
                 Button {
                     observed.apiResponse = nil
                     observed.pageCount = 1
