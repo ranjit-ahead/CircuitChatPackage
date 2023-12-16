@@ -58,9 +58,9 @@ struct MediaLinksDocs: View {
     
     var mediaList: some View {
         Group {
-            if let observedData = observed.mediaData, observedData.count>0 {
+            if observed.mediaData.count>0 {
                 ScrollView {
-                    ForEach(Array(observedData), id: \.key) { str, data in
+                    ForEach(Array(observed.mediaData), id: \.key) { str, data in
                         Section(header: HStack { Text(str).font(.regularFont(14)).foregroundColor(.gray)
                             Spacer() }.textCase(nil)) {
                                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 5) {
@@ -91,9 +91,9 @@ struct MediaLinksDocs: View {
 
     var linksList: some View {
         Group {
-            if let observedData = observed.linksData, observedData.count>0 {
+            if observed.linksData.count>0 {
                 List {
-                    ForEach(Array(observedData), id: \.key) { str, data in
+                    ForEach(Array(observed.linksData), id: \.key) { str, data in
                         Section(header: HStack { Text(str).font(.regularFont(14)).foregroundColor(.gray)
                                                 Spacer() }.textCase(nil)) {
                             ForEach(data, id: \.self) { data in
@@ -118,9 +118,9 @@ struct MediaLinksDocs: View {
 
     var docsList: some View {
         Group {
-            if let observedData = observed.docsData, observedData.count>0 {
+            if observed.docsData.count>0 {
                 List {
-                    ForEach(Array(observedData), id: \.key) { str, data in
+                    ForEach(Array(observed.docsData), id: \.key) { str, data in
                         Section(header: HStack { Text(str).font(.regularFont(14)).foregroundColor(.gray)
                                                 Spacer() }.textCase(nil)) {
                             ForEach(data, id: \.self) { data in
