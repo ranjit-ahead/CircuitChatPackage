@@ -92,7 +92,7 @@ struct ChatListView: View {
                 searchBarView(apiResponse: observed.apiResponse)
                 
 //                if let _ = observed.apiResponse.menu.chats {
-                    chatList
+                    //chatList
 //                }
 //            }
         }
