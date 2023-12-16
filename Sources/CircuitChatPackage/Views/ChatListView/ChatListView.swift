@@ -86,15 +86,15 @@ struct ChatListView: View {
     var body: some View {
         //        NavigationStack {
         VStack {
-            if observed.apiResponse == nil {
-                ProgressView()
-            } else {
+//            if observed.apiResponse == nil {
+//                ProgressView()
+//            } else {
                 searchBarView(apiResponse: observed.apiResponse)
                 
 //                if let _ = observed.apiResponse.menu.chats {
                     chatList
 //                }
-            }
+//            }
         }
         .navigationDestination(isPresented: .constant(currentChatSelected != nil ? true : false)) {
             if let chatSelected = currentChatSelected {
@@ -731,38 +731,38 @@ struct ChatListView: View {
 //            let data = observed.apiResponse.menu.chats
 //            if let data = observed.apiResponse.menu.chats {
                 List {
-                    Section(header:
-                                VStack {
-                        if observed.archived {
-                            HStack {
-                                Spacer()
-                                Text((mode == .inactive) ? (observed.apiResponse.menu.editDescription ?? "") : (observed.apiResponse.menu.doneDescription ?? ""))
-                                    .font(.regularFont(14))
-                                    .multilineTextAlignment(.center)
-                                    .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
-                                Spacer()
-                            }.textCase(nil)
-                        } else {
-                            VStack {
-//                                if let activeUserResponse = observed.activeUserResponse {
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack {
-                                            ForEach(observed.activeUserResponse.data, id: \.id) { item in
-                                                OnlineMembers(userImage: item.avatar ?? nil, userName: item.name, isVerified: item.verified ?? false)
-                                                    .padding(.horizontal, 6)
-                                                    .onTapGesture {
-                                                        currentChatSelected = item
-                                                    }
-                                            }
-                                        }
-                                    }
-                                    .textCase(nil) //Handle Auto Capitalize
-                                    .frame(height: observed.activeUserResponse.data.count>0 ? 100 : 0)
-//                                }
-                            }.padding(.horizontal, -13)
-                        }
-                    }
-                    ) {
+//                    Section(header:
+//                                VStack {
+//                        if observed.archived {
+//                            HStack {
+//                                Spacer()
+//                                Text((mode == .inactive) ? (observed.apiResponse.menu.editDescription ?? "") : (observed.apiResponse.menu.doneDescription ?? ""))
+//                                    .font(.regularFont(14))
+//                                    .multilineTextAlignment(.center)
+//                                    .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
+//                                Spacer()
+//                            }.textCase(nil)
+//                        } else {
+//                            VStack {
+////                                if let activeUserResponse = observed.activeUserResponse {
+//                                    ScrollView(.horizontal, showsIndicators: false) {
+//                                        HStack {
+//                                            ForEach(observed.activeUserResponse.data, id: \.id) { item in
+//                                                OnlineMembers(userImage: item.avatar ?? nil, userName: item.name, isVerified: item.verified ?? false)
+//                                                    .padding(.horizontal, 6)
+//                                                    .onTapGesture {
+//                                                        currentChatSelected = item
+//                                                    }
+//                                            }
+//                                        }
+//                                    }
+//                                    .textCase(nil) //Handle Auto Capitalize
+//                                    .frame(height: observed.activeUserResponse.data.count>0 ? 100 : 0)
+////                                }
+//                            }.padding(.horizontal, -13)
+//                        }
+//                    }
+//                    ) {
                         if !observed.archived {
                             if let archived = observed.apiResponse.menu.archived {
                                 NavigationLink(destination: ChatListView(apiRequest: apiRequest, archivedView: true, observed: archivedObserved, chatObserved: chatObserved, archivedObserved: archivedObserved).toolbar(.hidden, for: .tabBar), label: {
@@ -862,9 +862,9 @@ struct ChatListView: View {
                                 Spacer()
                             } .listRowSeparator(.hidden)
                         }
-                    }
-                    .listSectionSeparator(.hidden)
-                    .listRowBackground(Color.clear)
+//                    }
+//                    .listSectionSeparator(.hidden)
+//                    .listRowBackground(Color.clear)
                 }
                 .refreshable {
                     reload()
