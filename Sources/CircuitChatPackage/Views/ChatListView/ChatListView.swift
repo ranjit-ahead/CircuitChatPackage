@@ -744,21 +744,21 @@ struct ChatListView: View {
                             }.textCase(nil)
                         } else {
                             VStack {
-                                if let activeUserResponse = observed.activeUserResponse {
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack {
-                                            ForEach(activeUserResponse.data, id: \.id) { item in
-                                                OnlineMembers(userImage: item.avatar ?? nil, userName: item.name, isVerified: item.verified ?? false)
-                                                    .padding(.horizontal, 6)
-                                                    .onTapGesture {
-                                                        currentChatSelected = item
-                                                    }
-                                            }
-                                        }
-                                    }
-                                    .textCase(nil) //Handle Auto Capitalize
-                                    .frame(height: activeUserResponse.data.count>0 ? 100 : 0)
-                                }
+//                                if let activeUserResponse = observed.activeUserResponse {
+//                                    ScrollView(.horizontal, showsIndicators: false) {
+//                                        HStack {
+//                                            ForEach(activeUserResponse.data, id: \.id) { item in
+//                                                OnlineMembers(userImage: item.avatar ?? nil, userName: item.name, isVerified: item.verified ?? false)
+//                                                    .padding(.horizontal, 6)
+//                                                    .onTapGesture {
+//                                                        currentChatSelected = item
+//                                                    }
+//                                            }
+//                                        }
+//                                    }
+//                                    .textCase(nil) //Handle Auto Capitalize
+//                                    .frame(height: activeUserResponse.data.count>0 ? 100 : 0)
+//                                }
                             }.padding(.horizontal, -13)
                         }
                     }
