@@ -12,7 +12,7 @@ import Combine
 //extension ChatListView {
     class ChatListViewObserved: ObservableObject {
         
-        @Published var apiResponse: LastChatResponse? = nil
+        @Published var apiResponse = LastChatResponse.example
         @Published var apiRequest: ApiRequest? = nil
         
         @Published var moreMenus: LastChatMoreMenu? = nil
@@ -100,7 +100,8 @@ import Combine
             circuitChatRequest(url, method: .post, bodyData: bodyData, model: SuccessMessage.self) { result in
                 switch result {
                 case .success:
-                    if let data = self.apiResponse?.menu.chats {
+                    print("success")
+//                    if let data = self.apiResponse?.menu.chats {
 //                        for index in 0..<data.count {
 //                            if data[index].id == chat.id  {
 //                                self.apiResponse?.menu.chats[index].pin = (chat.pin ?? false) ? false : true
@@ -111,7 +112,7 @@ import Combine
 //                                }
 //                            }
 //                        }
-                    }
+//                    }
                 case .failure(let error):
                     print("Error fetching chat messages: \(error.localizedDescription)")
                 }
@@ -190,10 +191,10 @@ import Combine
                 circuitChatRequest(url, method: apiRequest.apiMethod, model: LastChatResponse.self) { result in
                     switch result {
                     case .success(let data):
-                        if self.apiResponse == nil {
+                        if self.apiResponse.menu.chats.count == nil {
                             self.apiResponse = data
                         } else {
-                            self.apiResponse?.menu.chats.append(contentsOf: data.menu.chats)
+                            self.apiResponse.menu.chats.append(contentsOf: data.menu.chats)
                         }
 //                        if data.menu.chats.count > 0 {
                             self.pageCount += 1
@@ -212,7 +213,7 @@ import Combine
                     if self.apiResponse == nil {
                         self.apiResponse = data
                     } else {
-                        self.apiResponse?.menu.chats.append(contentsOf: data.menu.chats)
+                        self.apiResponse.menu.chats.append(contentsOf: data.menu.chats)
                     }
                     if data.menu.chats.count > 0 {
                         self.pageCount += 1
@@ -224,9 +225,7 @@ import Combine
         }
         
         func getIndexOfChat(_ chatId: String) -> Int {
-            guard let chats = self.apiResponse?.menu.chats else {
-                return 0
-            }
+            let chats = self.apiResponse.menu.chats
             
             // Sort the chats by createdAt date
             let sortedChats = chats.sorted { (chat1, chat2) -> Bool in
@@ -262,9 +261,7 @@ import Combine
         
         
         func getIndexOfChatFromChat(_ chat: LastChatData) -> Int {
-            guard var chats = self.apiResponse?.menu.chats else {
-                return 0
-            }
+            var chats = self.apiResponse.menu.chats
             
             if !chats.contains(where: { $0.id == chat.id }) {
                 chats.append(chat)

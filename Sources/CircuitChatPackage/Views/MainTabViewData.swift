@@ -74,6 +74,8 @@ struct FetchResponse: Codable, Identifiable, Equatable {
         
         case subDialog, muteDialog, unMuteDialog, reportUserDialog, reportGroupDialog, deleteDialog, exitDialog, blockDialog, unblockDialog
     }
+    
+    static let example = FetchResponse(id: nil, label: nil, label2: nil, labelSelected: nil, apiURL: nil, apiURLSelected: nil, apiMethod: nil, icon: nil, iconSelected: nil, count: nil, body: nil, backgroundColor: nil, placeholder: nil, value: nil, subDialog: nil, muteDialog: nil, unMuteDialog: nil, reportUserDialog: nil, reportGroupDialog: nil, deleteDialog: nil, exitDialog: nil, blockDialog: nil, unblockDialog: nil)
 }
 
 //MARK: DialogView
@@ -88,6 +90,8 @@ struct DialogView: Codable {
     let apiUrl: String?
     let apiMethod: String?
     let cancel: String?
+    
+    static let example = DialogView(icon: nil, innerIcons: nil, key: nil, label: nil, description: nil, confirmText: nil, buttons: nil, apiUrl: nil, apiMethod: nil, cancel: nil)
 }
 
 // MARK: - MainTabViewUser

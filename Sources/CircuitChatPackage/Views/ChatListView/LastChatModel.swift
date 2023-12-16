@@ -12,6 +12,8 @@ struct LastChatResponse: Codable {
     var menu: LastChatMenu
     let success: Bool?
     let message: String?
+    
+    static let example = LastChatResponse(menu: LastChatMenu.example, success: nil, message: nil)
 }
 
 // MARK: - LastChatMenu
@@ -42,6 +44,8 @@ struct LastChatMenu: Codable {
     let audio: String?
     let document: String?
     let location: String?
+    
+    static let example = LastChatMenu(navigationTitle: nil, edit: nil, editDescription: nil, doneDescription: nil, newChat: nil, search: nil, filter: nil, filterIcon: nil, filterTitle: nil, people: nil, group: nil, archived: nil, onlineIcon: nil, muteIcon: nil, pinIcon: nil, singleTick: nil, doubleTick: nil, missedCall: nil, groupCall: nil, defaultGorupAvatar: nil, defaultPeopleAvatar: nil, swipeOptions: nil, count: nil, chats: [LastChatData.example], footer: nil, protectedGroup: nil, noData: nil, you: nil, photo: nil, video: nil, audio: nil, document: nil, location: nil)
 }
 
 // MARK: - SwipeOptions
@@ -148,6 +152,8 @@ struct LastChatData: Codable, Identifiable, Equatable, Hashable {
     var id: String {
         return chat.id  // Combine chat ID and apiUrl to make a unique identifier
     }
+    
+    static let example = LastChatData(chat: Chat.example, apiMethod: nil, menu: nil, protectedGroup: nil)
 }
 
 // MARK: - Chat
@@ -184,6 +190,8 @@ struct Chat: Codable, Hashable, Equatable, Identifiable {
         case protected = "protected"
         case lastActive = "lastActive"
     }
+    
+    static let example = Chat(id: "", email: nil, name: "", avatar: nil, active: nil, action: nil, verified: nil, chatType: nil, protected: nil, lastActive: nil)
 }
 
 struct ChatIDAndType {
