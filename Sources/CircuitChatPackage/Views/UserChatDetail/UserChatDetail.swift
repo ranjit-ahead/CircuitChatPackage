@@ -516,72 +516,71 @@ struct UserChatDetail: View {
     //Replied Message View
     func repliedMessageView(_ chat: UserChatData) -> some View {
         VStack(alignment: .leading, spacing: 5) {
-            if let reply = chat {
+            let reply = chat
+            HStack {
                 HStack {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 5) {
+                    VStack(alignment: .leading, spacing: 5) {
+                        
+                        let sender = chat.sender ?? ""
+                        let repliedUser = sender==circuitChatUID ? "You" : (userDetails?.chatType=="group" ? (reply.senderDetails?.name ?? "") : userDetails?.name ?? "")
+                        
+                        Text(repliedUser)
+                            .font(.semiBoldFont(13))
+                        
+                        VStack {
+                            let text =
+                            reply.contentType == ContentType.image.rawValue ? "Photo" :
+                            reply.contentType  == ContentType.video.rawValue ? "Video" :
+                            reply.contentType  == ContentType.audio.rawValue ? "Audio" :
+                            reply.contentType == ContentType.application.rawValue ? "Document" :
+                            reply.contentType  == ContentType.contact.rawValue ? (reply.contact?.first?.name ?? "") :
+                            reply.contentType  == ContentType.location.rawValue ? "Location" : ""
                             
-                            let sender = chat.sender ?? ""
-                            let repliedUser = sender==circuitChatUID ? "You" : (userDetails?.chatType=="group" ? (reply.senderDetails?.name ?? "") : userDetails?.name ?? "")
+                            let image =
+                            reply.contentType == ContentType.image.rawValue ? Image(systemName: "camera.fill") :
+                            reply.contentType == ContentType.video.rawValue ? Image(systemName: "video.fill") :
+                            reply.contentType == ContentType.audio.rawValue ? Image(systemName: "mic.fill") :
+                            reply.contentType == ContentType.application.rawValue ? Image(systemName: "doc.fill") :
+                            reply.contentType == ContentType.contact.rawValue ? Image(systemName: "person.circle.fill") :
+                            reply.contentType == ContentType.location.rawValue ? Image(systemName: "location.fill") : Image(systemName: "")
                             
-                            Text(repliedUser)
-                                .font(.semiBoldFont(13))
-                            
-                            VStack {
-                                let text =
-                                reply.contentType == ContentType.image.rawValue ? "Photo" :
-                                reply.contentType  == ContentType.video.rawValue ? "Video" :
-                                reply.contentType  == ContentType.audio.rawValue ? "Audio" :
-                                reply.contentType == ContentType.application.rawValue ? "Document" :
-                                reply.contentType  == ContentType.contact.rawValue ? (reply.contact?.first?.name ?? "") :
-                                reply.contentType  == ContentType.location.rawValue ? "Location" : ""
-                                
-                                let image =
-                                reply.contentType == ContentType.image.rawValue ? Image(systemName: "camera.fill") :
-                                reply.contentType == ContentType.video.rawValue ? Image(systemName: "video.fill") :
-                                reply.contentType == ContentType.audio.rawValue ? Image(systemName: "mic.fill") :
-                                reply.contentType == ContentType.application.rawValue ? Image(systemName: "doc.fill") :
-                                reply.contentType == ContentType.contact.rawValue ? Image(systemName: "person.circle.fill") :
-                                reply.contentType == ContentType.location.rawValue ? Image(systemName: "location.fill") : Image(systemName: "")
-                                
-                                (text != "" ? Text(image) : Text("")) + Text(reply.text ?? text)
-                            }
-                            .font(.regularFont(14))
-                            .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
+                            (text != "" ? Text(image) : Text("")) + Text(reply.text ?? text)
                         }
-                        .padding()
-                        .contentShape(Rectangle())
-                        .overlay {
-                            GeometryReader { geometry in
-                                HStack {
-                                    Rectangle().foregroundColor(Color(red: 0.02, green: 0.49, blue: 0.99)).frame(width: 4)
-                                    Spacer()
-                                }
-                            }
-                        }
-                        
-                        Spacer()
-                        
-                        Group {
-                            if let media = reply.media {
-                                ImageDownloader(media)
-                            } else if reply.contentType == ContentType.location.rawValue {
-                                ImageDownloader("https://maps.google.com/maps/api/staticmap?markers=\(reply.location?.latitude ?? 27.998270),\(reply.location?.longitude ?? 79.230171)&size=250x270&sensor=true&key=AIzaSyBqpvO9b57QaoWD_OsDlmu-2ILU8KjCBlA&zoom=15")
-                                    .padding(.bottom, -50)
-                            }
-                        }.frame(width: 56).scaledToFit().cornerRadius(4).padding(2)
-                        
+                        .font(.regularFont(14))
+                        .foregroundColor(Color(red: 0.43, green: 0.43, blue: 0.43))
                     }
+                    .padding()
                     .contentShape(Rectangle())
-                    .onTapGesture {
-                        scrollToMessage = (chat.id ?? "")
+                    .overlay {
+                        GeometryReader { geometry in
+                            HStack {
+                                Rectangle().foregroundColor(Color(red: 0.02, green: 0.49, blue: 0.99)).frame(width: 4)
+                                Spacer()
+                            }
+                        }
                     }
                     
-                    Button {
-                        replyMessage = nil
-                    } label: {
-                        Image(systemName: "x.circle").resizable().foregroundColor(.blue).frame(maxWidth: 22, maxHeight: 22).padding()
-                    }
+                    Spacer()
+                    
+                    Group {
+                        if let media = reply.media {
+                            ImageDownloader(media)
+                        } else if reply.contentType == ContentType.location.rawValue {
+                            ImageDownloader("https://maps.google.com/maps/api/staticmap?markers=\(reply.location?.latitude ?? 27.998270),\(reply.location?.longitude ?? 79.230171)&size=250x270&sensor=true&key=AIzaSyBqpvO9b57QaoWD_OsDlmu-2ILU8KjCBlA&zoom=15")
+                                .padding(.bottom, -50)
+                        }
+                    }.frame(width: 56).scaledToFit().cornerRadius(4).padding(2)
+                    
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    scrollToMessage = (chat.id ?? "")
+                }
+                
+                Button {
+                    replyMessage = nil
+                } label: {
+                    Image(systemName: "x.circle").resizable().foregroundColor(.blue).frame(maxWidth: 22, maxHeight: 22).padding()
                 }
             }
         }.background {
