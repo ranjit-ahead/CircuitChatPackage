@@ -11,7 +11,7 @@ import SwiftUI
 //extension ChatListView {
     class ChatListViewObserved: ObservableObject {
         
-        @Published var apiResponse: LastChatResponse? = nil
+        var apiResponse: LastChatResponse? = nil
         @Published var apiRequest: ApiRequest? = nil
         
         @Published var moreMenus: LastChatMoreMenu? = nil
