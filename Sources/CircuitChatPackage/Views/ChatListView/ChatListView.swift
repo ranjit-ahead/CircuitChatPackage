@@ -728,7 +728,7 @@ struct ChatListView: View {
     //MARK: CHATLIST
     var chatList: some View {
         VStack {
-            let data = observed.apiResponse.menu.chats
+//            let data = observed.apiResponse.menu.chats
 //            if let data = observed.apiResponse.menu.chats {
                 List {
                     Section(header:
@@ -783,14 +783,14 @@ struct ChatListView: View {
                                 Spacer()
                             }
                         }
-                        if data.count>0 {
-                            ForEach(data, id: \.id) { item in
+                        if observed.apiResponse.menu.chats.count>0 {
+                            ForEach(observed.apiResponse.menu.chats, id: \.id) { item in
                                 ChatItem(apiResponse: observed.apiResponse, item: item, editMode: $mode)
                                     .id(item)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
                                         if mode == .active {
-                                            if let index = data.firstIndex(of: item) {
+                                            if let index = observed.apiResponse.menu.chats.firstIndex(of: item) {
                                                 observed.apiResponse.menu.chats[index].isSelected = !(item.isSelected ?? false)
                                                 showEditingOptions.toggle()
                                             }
@@ -820,7 +820,7 @@ struct ChatListView: View {
                                             .toolbar(.hidden, for: .tabBar)
                                             .toolbarRole(.editor)
                                             .onAppear {
-                                                if let index = data.firstIndex(of: item) {
+                                                if let index = observed.apiResponse.menu.chats.firstIndex(of: item) {
                                                     observed.apiResponse.menu.chats[index].unread = 0
                                                 }                                            }
                                     }
@@ -835,7 +835,7 @@ struct ChatListView: View {
                                     }
                                     .onAppear {
                                         Task {
-                                            if observed.hasReachedEnd(of: item, array: data) {
+                                            if observed.hasReachedEnd(of: item, array: observed.apiResponse.menu.chats) {
                                                 observed.fetchApiData(apiRequest: observed.apiRequest)
                                             }
                                         }
