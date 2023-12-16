@@ -87,12 +87,11 @@ struct ChatListView: View {
     var body: some View {
         //        NavigationStack {
         VStack {
-            searchBarView
-            
             if observed.apiResponse == nil {
                 ProgressView()
             } else {
                 if let _ = observed.apiResponse?.menu.chats {
+                    searchBarView
                     chatList
                 }
             }
