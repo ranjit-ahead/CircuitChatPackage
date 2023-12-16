@@ -638,9 +638,9 @@ struct ChatListView: View {
     
     var searchBarView: some View {
         Group {
-            if let apiResponse = observed.apiResponse {
+            if let apiResponse = observed {
                 HStack {
-                    if let search = apiResponse.menu.search {
+                    if let search = apiResponse.apiResponse?.menu.search {
                         HStack {
                             ImageDownloader(search.icon, renderMode: .template)
                                 .foregroundColor(Color(red: 0.56, green: 0.56, blue: 0.58))
