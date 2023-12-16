@@ -268,19 +268,19 @@ struct ChatListView: View {
             if let activeFriendsData {
                 if let activeFriendsData = activeFriendsData.first {
                     var checkIfActiveFriendExist = false
-                    if let activeFriendsDataArray = observed.activeUserResponse?.data {
-                        for data in activeFriendsDataArray {
+//                    if let activeFriendsDataArray = observed.activeUserResponse.data {
+                        for data in observed.activeUserResponse.data {
                             if data.id == activeFriendsData.id, (activeFriendsData.active==false) {
                                 checkIfActiveFriendExist = true
-                                if let index = activeFriendsDataArray.firstIndex(of: data) {
-                                    observed.activeUserResponse?.data.remove(at: index)
+                                if let index = observed.activeUserResponse.data.firstIndex(of: data) {
+                                    observed.activeUserResponse.data.remove(at: index)
                                     break
                                 }
                             }
                         }
-                    }
+//                    }
                     if !checkIfActiveFriendExist {
-                        observed.activeUserResponse?.data.append(activeFriendsData)
+                        observed.activeUserResponse.data.append(activeFriendsData)
                     }
                 }
                 let data = observed.apiResponse.menu.chats
@@ -570,13 +570,13 @@ struct ChatListView: View {
         //Blocked Me
         .onChange(of: socketIO.blockedMe, perform: { chatResponse in
             let data = observed.apiResponse.menu.chats
-            if let chatResponse = chatResponse, let activeUsers = observed.activeUserResponse?.data, let chatIds = chatResponse.chat {
-                let activeUserIds = activeUsers.map { $0.id }
+            if let chatResponse = chatResponse, let chatIds = chatResponse.chat {
+                let activeUserIds = observed.activeUserResponse.data.map { $0.id }
                 
                 for chat in chatIds {
                     // Remove active user
                     if let activeUserIndex = activeUserIds.firstIndex(of: chat) {
-                        observed.activeUserResponse?.data.remove(at: activeUserIndex)
+                        observed.activeUserResponse.data.remove(at: activeUserIndex)
                     }
                     
                     // Update chat data
@@ -745,19 +745,19 @@ struct ChatListView: View {
                         } else {
                             VStack {
 //                                if let activeUserResponse = observed.activeUserResponse {
-//                                    ScrollView(.horizontal, showsIndicators: false) {
-//                                        HStack {
-//                                            ForEach(activeUserResponse.data, id: \.id) { item in
-//                                                OnlineMembers(userImage: item.avatar ?? nil, userName: item.name, isVerified: item.verified ?? false)
-//                                                    .padding(.horizontal, 6)
-//                                                    .onTapGesture {
-//                                                        currentChatSelected = item
-//                                                    }
-//                                            }
-//                                        }
-//                                    }
-//                                    .textCase(nil) //Handle Auto Capitalize
-//                                    .frame(height: activeUserResponse.data.count>0 ? 100 : 0)
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack {
+                                            ForEach(observed.activeUserResponse.data, id: \.id) { item in
+                                                OnlineMembers(userImage: item.avatar ?? nil, userName: item.name, isVerified: item.verified ?? false)
+                                                    .padding(.horizontal, 6)
+                                                    .onTapGesture {
+                                                        currentChatSelected = item
+                                                    }
+                                            }
+                                        }
+                                    }
+                                    .textCase(nil) //Handle Auto Capitalize
+                                    .frame(height: observed.activeUserResponse.data.count>0 ? 100 : 0)
 //                                }
                             }.padding(.horizontal, -13)
                         }
@@ -894,7 +894,7 @@ struct ChatListView: View {
                             UIView.setAnimationsEnabled(false)
                         }
                         .onDisappear {
-                            observed.moreMenus = nil
+                            observed.moreMenus = LastChatMoreMenu.example
                         }
                 })
                 .fullScreenCover(isPresented: .constant(muteDialog != nil ? true : false), content: {
@@ -1198,7 +1198,7 @@ struct ChatListView: View {
     
     var chatCustomDialog: some View {
         Group {
-            if let moreMenus = observed.moreMenus?.menu {
+            if let moreMenus = observed.moreMenus.menu {
                 CustomDialog(isPresented: $showMoreOptions, bodyContent: {
                     VStack {
                         ForEach(moreMenus) { moreMenu in

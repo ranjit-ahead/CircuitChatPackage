@@ -16,6 +16,8 @@ struct ActiveFriends: Codable {
         case data = "data"
         case count = "count"
     }
+    
+    static let example = ActiveFriends(data: [Chat.example])
 }
 
 // MARK: - ActiveFriendsData

@@ -84,6 +84,8 @@ struct ProtectedGroup: Codable {
 
 struct LastChatMoreMenu: Codable {
     let menu: [FetchResponse]?
+    
+    static let example = LastChatMoreMenu(menu: nil)
 }
 
 // MARK: - LastChatResponse

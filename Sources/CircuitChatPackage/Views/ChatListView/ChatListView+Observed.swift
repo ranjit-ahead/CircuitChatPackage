@@ -15,15 +15,14 @@ import Combine
         @Published var apiResponse = LastChatResponse.example
         @Published var apiRequest: ApiRequest? = nil
         
-        @Published var moreMenus: LastChatMoreMenu? = nil
+        @Published var moreMenus = LastChatMoreMenu.example
         
         @Published var pageCount = 1
         @Published var limitCount = 15
         
         @Published var archived = false
-        @Published var archivedResponse: LastChatResponse?
         
-        @Published var activeUserResponse: ActiveFriends?
+        @Published var activeUserResponse = ActiveFriends.example
         
         func reportChat(chat: LastChatData, apiRequest: ApiRequest, block: Bool, leave: Bool) {
             let bodyData: [String:Any] = [
@@ -158,8 +157,8 @@ import Combine
                 switch result {
                 case .success(let data):
                     self.activeUserResponse = data
-                    self.activeUserResponse?.data.enumerated().forEach { index, user in
-                        self.activeUserResponse?.data[index].active = true
+                    self.activeUserResponse.data.enumerated().forEach { index, user in
+                        self.activeUserResponse.data[index].active = true
                     }
                 case .failure(let error):
                     print("Error fetching chat messages: \(error.localizedDescription)")
