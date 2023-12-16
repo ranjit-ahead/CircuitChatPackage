@@ -19,7 +19,7 @@ struct ChatView : View {
     
     var body: some View {
         NavigationStack {
-            ChatListView(apiRequest: apiRequest, observed: observed, chatObserved: observed, archivedObserved: archivedObserved)
+            ChatListView(apiRequest: apiRequest)
         }
         .onAppear {
             if observed.apiResponse == nil {
@@ -49,9 +49,9 @@ struct ChatListView: View {
     
     @EnvironmentObject var socketIO: CircuitChatSocketManager
     
-    @ObservedObject var observed: ChatListViewObserved
-    @ObservedObject var chatObserved: ChatListViewObserved
-    @ObservedObject var archivedObserved: ChatListViewObserved
+    @StateObject var observed: ChatListViewObserved = ChatListViewObserved()
+    @StateObject var chatObserved: ChatListViewObserved = ChatListViewObserved()
+    @StateObject var archivedObserved: ChatListViewObserved = ChatListViewObserved()
     
     @StateObject private var showingNewChat = NewChatNavigation()
     
@@ -105,6 +105,25 @@ struct ChatListView: View {
         }
         .onAppear {
             currentChatSelected = nil
+            
+            if observed.apiResponse == nil {
+                observed.apiResponse = nil
+                observed.archived = false
+                observed.apiRequest = apiRequest
+                observed.fetchApiData(apiRequest: observed.apiRequest)
+            }
+            if chatObserved.apiResponse == nil {
+                chatObserved.apiResponse = nil
+                chatObserved.archived = false
+                chatObserved.apiRequest = apiRequest
+                chatObserved.fetchApiData(apiRequest: observed.apiRequest)
+            }
+            if archivedObserved.apiResponse == nil {
+                archivedObserved.apiResponse = nil
+                archivedObserved.archived = true
+                archivedObserved.apiRequest = apiRequest
+                archivedObserved.fetchApiData(apiRequest: observed.apiRequest)
+            }
         }
         .navigationTitle(observed.apiResponse?.menu.navigationTitle ?? "")
         .navigationBarTitleDisplayMode(.inline)
