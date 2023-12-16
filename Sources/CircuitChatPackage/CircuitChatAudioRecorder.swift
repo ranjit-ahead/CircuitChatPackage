@@ -9,9 +9,9 @@ import AVFoundation
 
 class CircuitChatAudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
     private var audioRecorder: AVAudioRecorder?
-    var isRecording = false
+    @Published var isRecording = false
     
-    var audioURL: URL?
+    @Published var audioURL: URL?
 
     func startRecording() {
         let audioSession = AVAudioSession.sharedInstance()

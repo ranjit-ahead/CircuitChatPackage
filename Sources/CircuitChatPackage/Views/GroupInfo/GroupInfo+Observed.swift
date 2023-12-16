@@ -9,9 +9,9 @@ import Foundation
 
 class GroupInfoObserved: ObservableObject {
     
-    var toastMessage: String?
+    @Published var toastMessage: String?
     
-    var data: GroupInfoData?
+    @Published var data: GroupInfoData?
     
     //MARK: EDIT GROUP
     func editGroup(_ id: String, groupName: String, metadata: String) {

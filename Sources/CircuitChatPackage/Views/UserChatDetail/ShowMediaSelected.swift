@@ -10,7 +10,7 @@ import PhotosUI
 import AVKit
 
 class SelectedMedia: ObservableObject {
-    var items = [MediaObject]()
+    @Published var items = [MediaObject]()
     
     func append(item: MediaObject) {
         items.append(item)
@@ -408,7 +408,7 @@ struct ShowData: View {
 }
 
 class PickedMediaItems : ObservableObject {
-    var items: [URL] = []
+    @Published var items: [URL] = []
     
 }
 
@@ -578,7 +578,7 @@ struct PhotoPickerModel: Equatable {
 }
 
 //class PickedMediaItems: ObservableObject {
-//    var items = [PhotoPickerModel]()
+//    @Published var items = [PhotoPickerModel]()
 //
 //    func append(item: PhotoPickerModel) {
 //        items.append(item)

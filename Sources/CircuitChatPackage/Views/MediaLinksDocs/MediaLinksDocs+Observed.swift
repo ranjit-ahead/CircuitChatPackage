@@ -12,9 +12,9 @@ extension MediaLinksDocs {
         
         var responseData: MediaLinksDocsModel?
         
-        var mediaData: [String: [MediaLinksDocsData]] = [:]
-        var linksData: [String: [MediaLinksDocsData]] = [:]
-        var docsData: [String: [MediaLinksDocsData]] = [:]
+        @Published var mediaData: [String: [MediaLinksDocsData]] = [:]
+        @Published var linksData: [String: [MediaLinksDocsData]] = [:]
+        @Published var docsData: [String: [MediaLinksDocsData]] = [:]
         
         func fetchData(_ segment: Int, lastChatData: Chat) {
             

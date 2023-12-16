@@ -9,7 +9,7 @@ import Foundation
 
 extension StarredMessage {
     class Observed: ObservableObject {
-        var userChatDataArray: [UserChatData]?
+        @Published var userChatDataArray: [UserChatData]?
         
         func starredMessage(_ chat: [UserChatData]) {
             var idArray:[String] = []

@@ -101,7 +101,7 @@ struct MainTabView: View {
 //}
 
 final class NewChatNavigation: ObservableObject {
-    var showSheet = false
+    @Published var showSheet = false
 }
 
 //____________________________________________________________________________________________________________________________

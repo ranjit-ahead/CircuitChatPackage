@@ -12,17 +12,17 @@ import SwiftUI
     class ChatListViewObserved: ObservableObject {
         
         var apiResponse: LastChatResponse? = nil
-        var apiRequest: ApiRequest? = nil
+        @Published var apiRequest: ApiRequest? = nil
         
-        var moreMenus: LastChatMoreMenu? = nil
+        @Published var moreMenus: LastChatMoreMenu? = nil
         
-        var pageCount = 1
-        var limitCount = 15
+        @Published var pageCount = 1
+        @Published var limitCount = 15
         
-        var archived = false
-        var archivedResponse: LastChatResponse?
+        @Published var archived = false
+        @Published var archivedResponse: LastChatResponse?
         
-        var activeUserResponse: ActiveFriends?
+        @Published var activeUserResponse: ActiveFriends?
         
         func reportChat(chat: LastChatData, apiRequest: ApiRequest, block: Bool, leave: Bool) {
             let bodyData: [String:Any] = [

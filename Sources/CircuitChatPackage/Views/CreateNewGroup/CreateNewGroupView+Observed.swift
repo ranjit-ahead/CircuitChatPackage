@@ -11,7 +11,7 @@ import SwiftUI
 extension CreateNewGroupView {
     class Observed: ObservableObject {
         
-//        var apiResponse: CreateGroupResponse?
+//        @Published var apiResponse: CreateGroupResponse?
         
         var socketIO: CircuitChatSocketManager?
         
