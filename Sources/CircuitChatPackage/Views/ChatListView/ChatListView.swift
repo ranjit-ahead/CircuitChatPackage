@@ -1277,24 +1277,23 @@ struct ChatListView: View {
                     .padding()
                 }, cancelContent: {
                     VStack {
-                        if let moreMenu = moreMenus.filter({ $0.id=="cancel" }) {
-                            if let cancelMenu = moreMenu.first {
-                                Button {
-                                    showMoreOptions.toggle()
-                                } label: {
-                                    HStack {
-                                        Spacer()
-                                        Text(cancelMenu.label ?? "")
-                                            .font(.semiBoldFont(16))
-                                        Spacer()
-                                    }
-                                    .foregroundColor(Color(.label))
-                                    .accentColor(.black)
-                                    .padding()
-                                    .background(Color(.tertiarySystemBackground))
-                                    .frame(height: 53)
-                                }.background(Color(.tertiarySystemBackground)).cornerRadius(10)
-                            }
+                        let moreMenu = moreMenus.filter({ $0.id=="cancel" })
+                        if let cancelMenu = moreMenu.first {
+                            Button {
+                                showMoreOptions.toggle()
+                            } label: {
+                                HStack {
+                                    Spacer()
+                                    Text(cancelMenu.label ?? "")
+                                        .font(.semiBoldFont(16))
+                                    Spacer()
+                                }
+                                .foregroundColor(Color(.label))
+                                .accentColor(.black)
+                                .padding()
+                                .background(Color(.tertiarySystemBackground))
+                                .frame(height: 53)
+                            }.background(Color(.tertiarySystemBackground)).cornerRadius(10)
                         }
                     }
                 })
