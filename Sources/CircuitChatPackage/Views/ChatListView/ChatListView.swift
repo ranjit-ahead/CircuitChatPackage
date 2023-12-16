@@ -14,27 +14,27 @@ struct ChatView : View {
     
     @EnvironmentObject var socketIO: CircuitChatSocketManager
     
-    @StateObject private var observed = ChatListViewObserved()
-    @StateObject private var archivedObserved = ChatListViewObserved()
+//    @StateObject private var observed = ChatListViewObserved()
+//    @StateObject private var archivedObserved = ChatListViewObserved()
     
     var body: some View {
         NavigationStack {
             ChatListView(apiRequest: apiRequest)
         }
-        .onAppear {
-            if observed.apiResponse == nil {
-                observed.apiResponse = nil
-                observed.archived = false
-                observed.apiRequest = apiRequest
-                observed.fetchApiData(apiRequest: observed.apiRequest)
-            }
-            if archivedObserved.apiResponse == nil {
-                archivedObserved.apiResponse = nil
-                archivedObserved.archived = true
-                archivedObserved.apiRequest = apiRequest
-                archivedObserved.fetchApiData(apiRequest: observed.apiRequest)
-            }
-        }
+//        .onAppear {
+//            if observed.apiResponse == nil {
+//                observed.apiResponse = nil
+//                observed.archived = false
+//                observed.apiRequest = apiRequest
+//                observed.fetchApiData(apiRequest: observed.apiRequest)
+//            }
+//            if archivedObserved.apiResponse == nil {
+//                archivedObserved.apiResponse = nil
+//                archivedObserved.archived = true
+//                archivedObserved.apiRequest = apiRequest
+//                archivedObserved.fetchApiData(apiRequest: observed.apiRequest)
+//            }
+//        }
     }
     
 }
@@ -50,8 +50,8 @@ struct ChatListView: View {
     @EnvironmentObject var socketIO: CircuitChatSocketManager
     
     @StateObject var observed: ChatListViewObserved = ChatListViewObserved()
-    @StateObject var chatObserved: ChatListViewObserved = ChatListViewObserved()
-    @StateObject var archivedObserved: ChatListViewObserved = ChatListViewObserved()
+//    @StateObject var chatObserved: ChatListViewObserved = ChatListViewObserved()
+//    @StateObject var archivedObserved: ChatListViewObserved = ChatListViewObserved()
     
     @StateObject private var showingNewChat = NewChatNavigation()
     
@@ -108,22 +108,22 @@ struct ChatListView: View {
             
             if observed.apiResponse == nil {
                 observed.apiResponse = nil
-                observed.archived = false
+                observed.archived = archivedView
                 observed.apiRequest = apiRequest
                 observed.fetchApiData(apiRequest: observed.apiRequest)
             }
-            if chatObserved.apiResponse == nil {
-                chatObserved.apiResponse = nil
-                chatObserved.archived = false
-                chatObserved.apiRequest = apiRequest
-                chatObserved.fetchApiData(apiRequest: observed.apiRequest)
-            }
-            if archivedObserved.apiResponse == nil {
-                archivedObserved.apiResponse = nil
-                archivedObserved.archived = true
-                archivedObserved.apiRequest = apiRequest
-                archivedObserved.fetchApiData(apiRequest: observed.apiRequest)
-            }
+//            if chatObserved.apiResponse == nil {
+//                chatObserved.apiResponse = nil
+//                chatObserved.archived = false
+//                chatObserved.apiRequest = apiRequest
+//                chatObserved.fetchApiData(apiRequest: observed.apiRequest)
+//            }
+//            if archivedObserved.apiResponse == nil {
+//                archivedObserved.apiResponse = nil
+//                archivedObserved.archived = true
+//                archivedObserved.apiRequest = apiRequest
+//                archivedObserved.fetchApiData(apiRequest: observed.apiRequest)
+//            }
         }
         .navigationTitle(observed.apiResponse?.menu.navigationTitle ?? "")
         .navigationBarTitleDisplayMode(.inline)
@@ -180,103 +180,103 @@ struct ChatListView: View {
                     id = editMessage.sender
                 }
                 
-                if let index = chatObserved.apiResponse?.menu.chats.firstIndex(where: { $0.chat.id == id }) {
-                    let checkPinnedMessages = chatObserved.apiResponse?.menu.chats.filter{ ($0.pin ?? false && $0.id != id) }.count ?? 0
-                    let unreadCount = Int(chatObserved.apiResponse?.menu.chats[index].unread ?? 0)
-                    chatObserved.apiResponse?.menu.chats[index].chat.action = nil
-                    chatObserved.apiResponse?.menu.chats[index].userChatData = editMessage
-                    chatObserved.apiResponse?.menu.chats[index].fromMe = true
-                    if editMessage.sender != circuitChatUID {
-                        chatObserved.apiResponse?.menu.chats[index].unread = unreadCount + 1
-                        chatObserved.apiResponse?.menu.chats[index].fromMe = false
-                    } else {
-                        chatObserved.apiResponse?.menu.chats[index].fromMe = true
-                    }
-                    
-                    if let data = observed.apiResponse?.menu.chats[index] {
-                        chatObserved.apiResponse?.menu.chats.remove(at: index)
-                        chatObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
-                    }
-                } else if let index = archivedObserved.apiResponse?.menu.chats.firstIndex(where: { $0.chat.id == id }) {
-                    let checkPinnedMessages = archivedObserved.apiResponse?.menu.chats.filter{ ($0.pin ?? false && $0.id != id) }.count ?? 0
-                    let unreadCount = Int(archivedObserved.apiResponse?.menu.chats[index].unread ?? 0)
-                    archivedObserved.apiResponse?.menu.chats[index].chat.action = nil
-                    archivedObserved.apiResponse?.menu.chats[index].userChatData = editMessage
-                    
-                    if editMessage.sender != circuitChatUID {
-                        archivedObserved.apiResponse?.menu.chats[index].unread = unreadCount + 1
-                        archivedObserved.apiResponse?.menu.chats[index].fromMe = false
-                    } else {
-                        archivedObserved.apiResponse?.menu.chats[index].fromMe = true
-                    }
-                    
-                    if let data = archivedObserved.apiResponse?.menu.chats[index] {
-                        archivedObserved.apiResponse?.menu.chats.remove(at: index)
-                        archivedObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
-                    }
-                }
+//                if let index = chatObserved.apiResponse?.menu.chats.firstIndex(where: { $0.chat.id == id }) {
+//                    let checkPinnedMessages = chatObserved.apiResponse?.menu.chats.filter{ ($0.pin ?? false && $0.id != id) }.count ?? 0
+//                    let unreadCount = Int(chatObserved.apiResponse?.menu.chats[index].unread ?? 0)
+//                    chatObserved.apiResponse?.menu.chats[index].chat.action = nil
+//                    chatObserved.apiResponse?.menu.chats[index].userChatData = editMessage
+//                    chatObserved.apiResponse?.menu.chats[index].fromMe = true
+//                    if editMessage.sender != circuitChatUID {
+//                        chatObserved.apiResponse?.menu.chats[index].unread = unreadCount + 1
+//                        chatObserved.apiResponse?.menu.chats[index].fromMe = false
+//                    } else {
+//                        chatObserved.apiResponse?.menu.chats[index].fromMe = true
+//                    }
+//
+//                    if let data = observed.apiResponse?.menu.chats[index] {
+//                        chatObserved.apiResponse?.menu.chats.remove(at: index)
+//                        chatObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
+//                    }
+//                } else if let index = archivedObserved.apiResponse?.menu.chats.firstIndex(where: { $0.chat.id == id }) {
+//                    let checkPinnedMessages = archivedObserved.apiResponse?.menu.chats.filter{ ($0.pin ?? false && $0.id != id) }.count ?? 0
+//                    let unreadCount = Int(archivedObserved.apiResponse?.menu.chats[index].unread ?? 0)
+//                    archivedObserved.apiResponse?.menu.chats[index].chat.action = nil
+//                    archivedObserved.apiResponse?.menu.chats[index].userChatData = editMessage
+//
+//                    if editMessage.sender != circuitChatUID {
+//                        archivedObserved.apiResponse?.menu.chats[index].unread = unreadCount + 1
+//                        archivedObserved.apiResponse?.menu.chats[index].fromMe = false
+//                    } else {
+//                        archivedObserved.apiResponse?.menu.chats[index].fromMe = true
+//                    }
+//
+//                    if let data = archivedObserved.apiResponse?.menu.chats[index] {
+//                        archivedObserved.apiResponse?.menu.chats.remove(at: index)
+//                        archivedObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
+//                    }
+//                }
                 
                 socketIO.messageEdited = nil
             }
         }
         
-        //New Message
-        .onChange(of: socketIO.newMessageArray, perform: { newMessageArray in
-            if let newMessageArray = newMessageArray {
-                var checkIfUserExist = false
-
-                for newMessage in newMessageArray {
-                    var id = newMessage.receiver
-                    if id == circuitChatUID {
-                        id = newMessage.sender
-                    }
-                    
-                    if let index = chatObserved.apiResponse?.menu.chats.firstIndex(where: { $0.chat.id == id }) {
-                        let checkPinnedMessages = chatObserved.apiResponse?.menu.chats.filter{ ($0.pin ?? false && $0.id != id) }.count ?? 0
-                        let unreadCount = Int(chatObserved.apiResponse?.menu.chats[index].unread ?? 0)
-                        chatObserved.apiResponse?.menu.chats[index].chat.action = nil
-                        chatObserved.apiResponse?.menu.chats[index].userChatData = newMessage
-                        chatObserved.apiResponse?.menu.chats[index].fromMe = true
-                        if newMessage.sender != circuitChatUID {
-                            chatObserved.apiResponse?.menu.chats[index].unread = unreadCount + 1
-                            chatObserved.apiResponse?.menu.chats[index].fromMe = false
-                        } else {
-                            chatObserved.apiResponse?.menu.chats[index].fromMe = true
-                        }
-                        checkIfUserExist = true
-                        
-                        if let data = observed.apiResponse?.menu.chats[index] {
-                            chatObserved.apiResponse?.menu.chats.remove(at: index)
-                            chatObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
-                        }
-                    } else if let index = archivedObserved.apiResponse?.menu.chats.firstIndex(where: { $0.chat.id == id }) {
-                        let checkPinnedMessages = archivedObserved.apiResponse?.menu.chats.filter{ ($0.pin ?? false && $0.id != id) }.count ?? 0
-                        let unreadCount = Int(archivedObserved.apiResponse?.menu.chats[index].unread ?? 0)
-                        archivedObserved.apiResponse?.menu.chats[index].chat.action = nil
-                        archivedObserved.apiResponse?.menu.chats[index].userChatData = newMessage
-                        
-                        if newMessage.sender != circuitChatUID {
-                            archivedObserved.apiResponse?.menu.chats[index].unread = unreadCount + 1
-                            archivedObserved.apiResponse?.menu.chats[index].fromMe = false
-                        } else {
-                            archivedObserved.apiResponse?.menu.chats[index].fromMe = true
-                        }
-                        checkIfUserExist = true
-                        
-                        if let data = archivedObserved.apiResponse?.menu.chats[index] {
-                            archivedObserved.apiResponse?.menu.chats.remove(at: index)
-                            archivedObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
-                        }
-                    }
-                }
-
-                if !checkIfUserExist {
-                    reload()
-                }
-
-                socketIO.newMessageArray = nil
-            }
-        })
+//        //New Message
+//        .onChange(of: socketIO.newMessageArray, perform: { newMessageArray in
+//            if let newMessageArray = newMessageArray {
+//                var checkIfUserExist = false
+//
+//                for newMessage in newMessageArray {
+//                    var id = newMessage.receiver
+//                    if id == circuitChatUID {
+//                        id = newMessage.sender
+//                    }
+//
+//                    if let index = chatObserved.apiResponse?.menu.chats.firstIndex(where: { $0.chat.id == id }) {
+//                        let checkPinnedMessages = chatObserved.apiResponse?.menu.chats.filter{ ($0.pin ?? false && $0.id != id) }.count ?? 0
+//                        let unreadCount = Int(chatObserved.apiResponse?.menu.chats[index].unread ?? 0)
+//                        chatObserved.apiResponse?.menu.chats[index].chat.action = nil
+//                        chatObserved.apiResponse?.menu.chats[index].userChatData = newMessage
+//                        chatObserved.apiResponse?.menu.chats[index].fromMe = true
+//                        if newMessage.sender != circuitChatUID {
+//                            chatObserved.apiResponse?.menu.chats[index].unread = unreadCount + 1
+//                            chatObserved.apiResponse?.menu.chats[index].fromMe = false
+//                        } else {
+//                            chatObserved.apiResponse?.menu.chats[index].fromMe = true
+//                        }
+//                        checkIfUserExist = true
+//
+//                        if let data = observed.apiResponse?.menu.chats[index] {
+//                            chatObserved.apiResponse?.menu.chats.remove(at: index)
+//                            chatObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
+//                        }
+//                    } else if let index = archivedObserved.apiResponse?.menu.chats.firstIndex(where: { $0.chat.id == id }) {
+//                        let checkPinnedMessages = archivedObserved.apiResponse?.menu.chats.filter{ ($0.pin ?? false && $0.id != id) }.count ?? 0
+//                        let unreadCount = Int(archivedObserved.apiResponse?.menu.chats[index].unread ?? 0)
+//                        archivedObserved.apiResponse?.menu.chats[index].chat.action = nil
+//                        archivedObserved.apiResponse?.menu.chats[index].userChatData = newMessage
+//
+//                        if newMessage.sender != circuitChatUID {
+//                            archivedObserved.apiResponse?.menu.chats[index].unread = unreadCount + 1
+//                            archivedObserved.apiResponse?.menu.chats[index].fromMe = false
+//                        } else {
+//                            archivedObserved.apiResponse?.menu.chats[index].fromMe = true
+//                        }
+//                        checkIfUserExist = true
+//
+//                        if let data = archivedObserved.apiResponse?.menu.chats[index] {
+//                            archivedObserved.apiResponse?.menu.chats.remove(at: index)
+//                            archivedObserved.apiResponse?.menu.chats.insert(data, at: checkPinnedMessages)
+//                        }
+//                    }
+//                }
+//
+//                if !checkIfUserExist {
+//                    reload()
+//                }
+//
+//                socketIO.newMessageArray = nil
+//            }
+//        })
         
         //Active Friends
         .onChange(of: socketIO.activeFriendsData, perform: { activeFriendsData in
@@ -348,72 +348,72 @@ struct ChatListView: View {
         })
         
         //Chat Archived
-        .onChange(of: socketIO.chatArchived, perform: { chatResponse in
-            if !archivedView, let data = observed.apiResponse?.menu.chats, let chatResponse = chatResponse {
-                if let menu = chatResponse.menu, let archivedMenu = menu.archived, observed.apiResponse?.menu.archived == nil {
-                    observed.apiResponse?.menu.archived = archivedMenu
-                }
-
-                let updatedChats = data.filter { lastChatData in
-                    if let chatIDs = chatResponse.chat {
-                        return !chatIDs.contains(lastChatData.id)
-                    }
-                    return true
-                }
-
-                observed.apiResponse?.menu.chats = updatedChats
-                
-                let unarchivedChats = data.filter { lastChatData in
-                    if let chatIDs = chatResponse.chat {
-                        return chatIDs.contains(lastChatData.id)
-                    }
-                    return false
-                }
-                
-                for chat in unarchivedChats {
-                    let index = archivedObserved.getIndexOfChatFromChat(chat)
-                    if (index<(archivedObserved.apiResponse?.menu.chats.count ?? 0) || index==0 || (index+1)==(archivedObserved.apiResponse?.menu.count ?? 0)) {
-                        archivedObserved.apiResponse?.menu.chats.insert(chat, at: index)
-                    }
-                }
-
-                socketIO.chatArchived = nil
-            }
-        })
+//        .onChange(of: socketIO.chatArchived, perform: { chatResponse in
+//            if !archivedView, let data = observed.apiResponse?.menu.chats, let chatResponse = chatResponse {
+//                if let menu = chatResponse.menu, let archivedMenu = menu.archived, observed.apiResponse?.menu.archived == nil {
+//                    observed.apiResponse?.menu.archived = archivedMenu
+//                }
+//
+//                let updatedChats = data.filter { lastChatData in
+//                    if let chatIDs = chatResponse.chat {
+//                        return !chatIDs.contains(lastChatData.id)
+//                    }
+//                    return true
+//                }
+//
+//                observed.apiResponse?.menu.chats = updatedChats
+//
+//                let unarchivedChats = data.filter { lastChatData in
+//                    if let chatIDs = chatResponse.chat {
+//                        return chatIDs.contains(lastChatData.id)
+//                    }
+//                    return false
+//                }
+//
+//                for chat in unarchivedChats {
+//                    let index = archivedObserved.getIndexOfChatFromChat(chat)
+//                    if (index<(archivedObserved.apiResponse?.menu.chats.count ?? 0) || index==0 || (index+1)==(archivedObserved.apiResponse?.menu.count ?? 0)) {
+//                        archivedObserved.apiResponse?.menu.chats.insert(chat, at: index)
+//                    }
+//                }
+//
+//                socketIO.chatArchived = nil
+//            }
+//        })
         
         //Chat Unarchived
-        .onChange(of: socketIO.chatUnarchived) { chatResponse in
-            if archivedView, let data = observed.apiResponse?.menu.chats, let chatResponse = chatResponse {
-                if data.count == 1 {
-                    chatObserved.apiResponse?.menu.archived = nil
-                }
-
-                let updatedChats = data.filter { lastChatData in
-                    if let chatIDs = chatResponse.chat {
-                        return !chatIDs.contains(lastChatData.id)
-                    }
-                    return true
-                }
-
-                observed.apiResponse?.menu.chats = updatedChats
-                
-                let unarchivedChats = data.filter { lastChatData in
-                    if let chatIDs = chatResponse.chat {
-                        return chatIDs.contains(lastChatData.id)
-                    }
-                    return false
-                }
-                
-                for chat in unarchivedChats {
-                    let index = chatObserved.getIndexOfChatFromChat(chat)
-                    if (index<(chatObserved.apiResponse?.menu.chats.count ?? 0) || index==0 || (index+1)==(chatObserved.apiResponse?.menu.count ?? 0)) {
-                        chatObserved.apiResponse?.menu.chats.insert(chat, at: index)
-                    }
-                }
-
-                socketIO.chatUnarchived = nil
-            }
-        }
+//        .onChange(of: socketIO.chatUnarchived) { chatResponse in
+//            if archivedView, let data = observed.apiResponse?.menu.chats, let chatResponse = chatResponse {
+//                if data.count == 1 {
+//                    chatObserved.apiResponse?.menu.archived = nil
+//                }
+//
+//                let updatedChats = data.filter { lastChatData in
+//                    if let chatIDs = chatResponse.chat {
+//                        return !chatIDs.contains(lastChatData.id)
+//                    }
+//                    return true
+//                }
+//
+//                observed.apiResponse?.menu.chats = updatedChats
+//
+//                let unarchivedChats = data.filter { lastChatData in
+//                    if let chatIDs = chatResponse.chat {
+//                        return chatIDs.contains(lastChatData.id)
+//                    }
+//                    return false
+//                }
+//
+//                for chat in unarchivedChats {
+//                    let index = chatObserved.getIndexOfChatFromChat(chat)
+//                    if (index<(chatObserved.apiResponse?.menu.chats.count ?? 0) || index==0 || (index+1)==(chatObserved.apiResponse?.menu.count ?? 0)) {
+//                        chatObserved.apiResponse?.menu.chats.insert(chat, at: index)
+//                    }
+//                }
+//
+//                socketIO.chatUnarchived = nil
+//            }
+//        }
         
         //Message Recieved
         .onChange(of: socketIO.messageRecieved, perform: { messageRecieved in
@@ -760,7 +760,7 @@ struct ChatListView: View {
                     ) {
                         if !observed.archived {
                             if let archived = observed.apiResponse?.menu.archived {
-                                NavigationLink(destination: ChatListView(apiRequest: apiRequest, archivedView: true, observed: archivedObserved, chatObserved: chatObserved, archivedObserved: archivedObserved).toolbar(.hidden, for: .tabBar), label: {
+                                NavigationLink(destination: ChatListView(apiRequest: apiRequest, archivedView: true).toolbar(.hidden, for: .tabBar), label: {
                                     HStack {
                                         ImageDownloader(archived.icon, renderMode: .template)
                                             .frame(width: 28, height: 28)
