@@ -9,7 +9,7 @@ import Foundation
 
 //extension MainTabView {
     class MainTabViewObserved: ObservableObject {
-        @Published var apiResponse: MainTabViewData?
+        var apiResponse: MainTabViewData?
         
         var socketIO: CircuitChatSocketManager?
 //        var menus: FetchMenus?

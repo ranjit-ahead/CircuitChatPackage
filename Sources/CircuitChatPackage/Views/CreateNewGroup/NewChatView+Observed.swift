@@ -11,12 +11,12 @@ import Foundation
 extension NewChatView {
     class Observed: ObservableObject {
         
-        @Published var apiResponse: NewChatResponse?
+        var apiResponse: NewChatResponse?
         
-        @Published var frequentlyContactedArray: [Chat]?
-        @Published var chatArray: [NewChatContactsData]?
+        var frequentlyContactedArray: [Chat]?
+        var chatArray: [NewChatContactsData]?
         
-//        @Published var chatMapping: [String: [Chat]]?
+//        var chatMapping: [String: [Chat]]?
         
         var socketIO: CircuitChatSocketManager?
         

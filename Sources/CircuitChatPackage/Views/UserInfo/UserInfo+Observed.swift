@@ -10,7 +10,7 @@ import Foundation
 extension UserInfo {
     class Observed: ObservableObject {
         
-        @Published var data: UserInfoData?
+        var data: UserInfoData?
         
         //MARK: DELETE CHAT
         func deleteChat(_ id: String) {

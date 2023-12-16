@@ -10,16 +10,16 @@ import UIKit
 
 //extension UserChatDetail {
     class UserChatDetailObserved: ObservableObject {
-        @Published var userChat: UserChat?
+        var userChat: UserChat?
         
-        @Published var toastMessage: String?
+        var toastMessage: String?
         
-        @Published var userChatDataArray: [UserChatData]?
-        @Published var userChatData: UserChatData?
-        @Published var scrolledUserChatData: UserChatData?
-        @Published var pageCount = 1
-        @Published var limitCount = 10
-        @Published var requestFetching = false
+        var userChatDataArray: [UserChatData]?
+        var userChatData: UserChatData?
+        var scrolledUserChatData: UserChatData?
+        var pageCount = 1
+        var limitCount = 10
+        var requestFetching = false
         
         func reportChat(apiRequest: ApiRequest, block: Bool, leave: Bool) {
             let bodyData: [String:Any] = [

@@ -141,7 +141,7 @@ extension SettingsView {
     
     class Observed: ObservableObject {
         
-        @Published var data: GroupInfoModel?
+        var data: GroupInfoModel?
         
         func fetchInfo(_ id: String) {
             circuitChatRequest("/user/profile?friend=\(id)", method: .get, model: GroupInfoModel.self) { result in

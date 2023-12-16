@@ -1053,20 +1053,20 @@ import SwiftUI
 //extension ArchivedView {
 //    class Observed: ObservableObject {
 //
-//        @Published var apiResponse: LastChatResponse?
-//        @Published var apiRequest: ApiRequest?
+//        var apiResponse: LastChatResponse?
+//        var apiRequest: ApiRequest?
 //
-//        @Published var moreMenus: LastChatMoreMenu?
+//        var moreMenus: LastChatMoreMenu?
 //
-//        @Published var pageCount = 1
-//        @Published var limitCount = 15
+//        var pageCount = 1
+//        var limitCount = 15
 //
-//        @Published var archived = false
-//        @Published var archivedResponse: LastChatResponse?
+//        var archived = false
+//        var archivedResponse: LastChatResponse?
 //
-//        @Published var activeUserResponse: ActiveFriends?
+//        var activeUserResponse: ActiveFriends?
 //
-//        @Published var unread = false
+//        var unread = false
 //
 //        func reportChat(chat: LastChatData, apiRequest: ApiRequest, block: Bool, leave: Bool) {
 //            let bodyData: [String:Any] = [
@@ -1249,17 +1249,17 @@ import SwiftUI
 //extension ChatListView {
 //    class ChatListViewObserved: ObservableObject {
 //
-//        @Published var apiResponse: LastChatResponse?
+//        var apiResponse: LastChatResponse?
 //
-//        @Published var moreMenus: LastChatMoreMenu?
+//        var moreMenus: LastChatMoreMenu?
 //
-//        @Published var pageCount = 1
-//        @Published var limitCount = 15
+//        var pageCount = 1
+//        var limitCount = 15
 //
-//        @Published var archived = false
-//        @Published var archivedResponse: LastChatResponse?
+//        var archived = false
+//        var archivedResponse: LastChatResponse?
 //
-//        @Published var activeUserResponse: ActiveFriends?
+//        var activeUserResponse: ActiveFriends?
 //
 //        func muteChatNotifications(chat: LastChatData) {
 //            let bodyData: [String:Any] = [

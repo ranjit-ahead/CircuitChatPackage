@@ -210,7 +210,7 @@ struct EditProfile: View {
 extension EditProfile {
     class Observed: ObservableObject {
         
-        @Published var data: GroupInfoModel?
+        var data: GroupInfoModel?
         
         func editUserProfile(name: String, metadata: String, about: String, avatar: URL?) {
             

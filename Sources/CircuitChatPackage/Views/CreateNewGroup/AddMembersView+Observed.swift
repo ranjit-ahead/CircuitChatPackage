@@ -10,10 +10,10 @@ import Foundation
 extension AddMembersView {
     class Observed: ObservableObject {
         
-        @Published var apiResponse: NewChatResponse?
+        var apiResponse: NewChatResponse?
         
-        @Published var frequentlyContactedArray: [Chat]?
-        @Published var chatArray: [NewChatContactsData]?
+        var frequentlyContactedArray: [Chat]?
+        var chatArray: [NewChatContactsData]?
         
         var socketIO: CircuitChatSocketManager?
         

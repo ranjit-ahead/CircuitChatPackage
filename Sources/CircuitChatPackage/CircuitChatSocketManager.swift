@@ -41,32 +41,32 @@ class CircuitChatSocketManager: ObservableObject {
     private var manager: SocketManager?
     var defaultUserSocket: SocketIOClient?
     
-    @Published var isConnected = false
-    @Published var newMessageArray: [UserChatData]?
-    @Published var activeFriendsData: [Chat]?
-    @Published var messageDeleted: [MessageID]?
-    @Published var messageDeletedEveryone: [UserChatData]?
-    @Published var messageRecieved: [String]?
-    @Published var messageSeen: [MessageID]?
-    @Published var userAction: [UserAction]?
+    var isConnected = false
+    var newMessageArray: [UserChatData]?
+    var activeFriendsData: [Chat]?
+    var messageDeleted: [MessageID]?
+    var messageDeletedEveryone: [UserChatData]?
+    var messageRecieved: [String]?
+    var messageSeen: [MessageID]?
+    var userAction: [UserAction]?
     
-    @Published var chatArchived: SocketChatResponse?
-    @Published var chatUnarchived: SocketChatResponse?
-    @Published var conversationDeleted: SocketChatResponse?
-    @Published var chatRead: SocketChatResponse?
-    @Published var chatUnread: SocketChatResponse?
-    @Published var chatMute: SocketChatResponse?
-    @Published var chatUnmute: SocketChatResponse?
-    @Published var chatBlock: SocketChatResponse?
-    @Published var chatUnblock: SocketChatResponse?
-    @Published var blockedMe: SocketChatResponse?
-    @Published var unblockedMe: SocketChatResponse?
-    @Published var chatPin: SocketChatResponse?
-    @Published var chatUnpin: SocketChatResponse?
+    var chatArchived: SocketChatResponse?
+    var chatUnarchived: SocketChatResponse?
+    var conversationDeleted: SocketChatResponse?
+    var chatRead: SocketChatResponse?
+    var chatUnread: SocketChatResponse?
+    var chatMute: SocketChatResponse?
+    var chatUnmute: SocketChatResponse?
+    var chatBlock: SocketChatResponse?
+    var chatUnblock: SocketChatResponse?
+    var blockedMe: SocketChatResponse?
+    var unblockedMe: SocketChatResponse?
+    var chatPin: SocketChatResponse?
+    var chatUnpin: SocketChatResponse?
     
-    @Published var unreadCount: SocketChatResponse?
+    var unreadCount: SocketChatResponse?
     
-    @Published var messageEdited: UserChatData?
+    var messageEdited: UserChatData?
     
     func connectSocket() {
         var config = SocketIOClientConfiguration()
