@@ -692,7 +692,7 @@ struct ChatListView: View {
                     }
                     
                     
-                    if let filter = observed.apiResponse?.menu.filter {
+                    if let filter = apiResponse.menu.filter {
                         Button {
                             observed.apiResponse = nil
                             observed.pageCount = 1
@@ -703,7 +703,7 @@ struct ChatListView: View {
                                 .viewIconModifierSize(imageWidth: 24, imageHeight: 16, iconSize: 42, imageColor: Color(uiColor: .systemGray), iconColor: Color(.systemGray6))
                                 .padding(.trailing, 15)
                         }
-                    } else if let filter = observed.apiResponse?.menu.filterIcon {
+                    } else if let filter = apiResponse.menu.filterIcon {
                         Button {
                             observed.apiResponse = nil
                             observed.pageCount = 1
