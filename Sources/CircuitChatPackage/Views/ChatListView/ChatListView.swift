@@ -728,7 +728,8 @@ struct ChatListView: View {
     //MARK: CHATLIST
     var chatList: some View {
         VStack {
-            if let data = observed.apiResponse.menu.chats {
+            let data = observed.apiResponse.menu.chats
+//            if let data = observed.apiResponse.menu.chats {
                 List {
                     Section(header:
                                 VStack {
@@ -990,7 +991,7 @@ struct ChatListView: View {
                         .padding()
                     })
                 })
-            }
+//            }
             if showingGroupPasswordAccess {
                 VStack {}
                     .fullScreenCover(isPresented: $showingGroupPasswordAccess, content: {
